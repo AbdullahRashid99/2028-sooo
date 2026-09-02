@@ -69,7 +69,7 @@ const Button = ({ children, className, ...props }) => (
   </button>
 );
 
-// --- Metric Badge Component (Matching Exact Image Design) ---
+// --- Metric Badge Component ---
 const MetricBadge = ({ label, value }) => (
   <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#031d1d]/90 border border-[#0d5c56] text-teal-400 backdrop-blur-md shadow-lg text-xs md:text-sm font-semibold">
     <div className="w-4 h-4 rounded-full border border-teal-400 flex items-center justify-center text-teal-300 text-[10px] font-bold">
@@ -87,13 +87,13 @@ const personalInfo = {
   title: "E-Com Media Buyer | Shopify Developer | Google Certificated Digital Marketer & E-commerce expert",
   linkedin: "https://www.linkedin.com/in/abdullah-rash-id/",
   whatsapp: "http://wa.me/+201025030220",
-  tiktok: "https://www.tiktok.com/", // تم إضافة الخاصية المفقودة
+  tiktok: "https://www.tiktok.com/",
   profileImage: "https://i.postimg.cc/2574Ss9d/9c10a25ab53cc9bdf0a8fc20082d0868-tplv-tiktokx-cropcenter-1080-1080.jpg",
 };
 
 const sections = [
   { id: "skills", title: "Skills" },
-  { id: "projects", title: "Results" },
+  { id: "projects", title: "Before & After Us" },
 ];
 
 const skillsData = [
@@ -111,7 +111,7 @@ const skillsData = [
   "Websites CRO"
 ];
 
-// --- 10 Cases Data with 30 Metric Badges Variations ---
+// --- Cases Data ---
 const caseStudiesData = [
   {
     id: 1,
@@ -300,7 +300,7 @@ const GalleryModal = ({ images = [], startIndex = 0, onClose }) => {
   );
 };
 
-// --- CERTIFICATIONS SECTION ---
+// --- CERTIFICATIONS & MIDDLE SLIDER ---
 const CERT_IMAGES = [
   'https://i.postimg.cc/rsxncdPk/65952225.jpg',
   'https://i.postimg.cc/B6dYd5MJ/6NXTTFXQ7B77-page-0001.jpg',
@@ -311,6 +311,32 @@ const CERT_IMAGES = [
   'https://i.postimg.cc/BZKw2ynt/Google-Certification.png',
 ];
 
+// --- MIDDLE MARQUEE BANNER TAPE (شريط الكلمات المفتاحية المتحرك) ---
+const MarqueeTape = () => {
+  const items = [
+    "Scale Your E-Commerce",
+    "High ROAS Strategies",
+    "Data-Driven Growth",
+    "CRO & Website Optimization",
+    "Shopify Expert",
+    "Google Certified Marketer",
+    "Media Buying Master"
+  ];
+  return (
+    <div className="w-full overflow-hidden bg-gradient-to-r from-teal-950 via-neutral-900 to-teal-950 border-y border-teal-800/40 py-3 my-8 relative select-none">
+      <div className="flex whitespace-nowrap animate-marquee">
+        {[...items, ...items, ...items].map((text, idx) => (
+          <span key={idx} className="mx-6 text-sm md:text-base font-semibold text-teal-300 tracking-wider flex items-center gap-3">
+            <span className="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+            {text}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// --- MIDDLE IMAGE SLIDER (الشريط المتحرك الأصلي) ---
 const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -337,8 +363,8 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   }, [speed, isPaused]);
 
   return (
-    <div className="w-full py-12">
-      <div className="max-w-5xl mx-auto overflow-hidden">
+    <div className="w-full py-8">
+      <div className="max-w-6xl mx-auto overflow-hidden">
         <h3 className="text-xl md:text-2xl font-bold mb-6 text-center text-amber-400">Google Certifications</h3>
         <div 
           ref={containerRef}
@@ -349,7 +375,7 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
           {duplicated.map((src, i) => (
             <motion.div 
               key={i} 
-              className="flex-shrink-0 w-48 h-32 md:w-64 md:h-40 bg-neutral-800 rounded-xl overflow-hidden cursor-pointer border border-neutral-700"
+              className="flex-shrink-0 w-48 h-32 md:w-64 md:h-40 bg-neutral-800 rounded-xl overflow-hidden cursor-pointer border border-neutral-700 shadow-lg hover:border-teal-400"
               whileHover={{ scale: 1.05 }}
               onClick={() => setZoomSrc(src)}
             >
@@ -373,7 +399,7 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   );
 };
 
-// --- TABBED CASES COMPONENT (Interactive Case Switcher) ---
+// --- TABBED CASES COMPONENT (Before & After Us) ---
 const InteractiveCasesView = () => {
   const [activeCaseId, setActiveCaseId] = useState(1);
   const [zoomSrc, setZoomSrc] = useState(null);
@@ -539,6 +565,9 @@ export default function Portfolio() {
         </section>
 
         <SocialCircle />
+        
+        {/* الشريط المتحرك والأوسمة في المنتصف */}
+        <MarqueeTape />
         <ImageSlider />
 
         <SectionWrapper ref={sectionRefs.skills} id="skills" title="Skills">
@@ -555,8 +584,8 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section with Dynamic Cases Tabs */}
-        <SectionWrapper ref={sectionRefs.projects} id="projects" title="Results">
+        {/* القسم الرئيسي المعدل الاسم إلى Before & After Us */}
+        <SectionWrapper ref={sectionRefs.projects} id="projects" title="Before & After Us">
           <InteractiveCasesView />
         </SectionWrapper>
 
