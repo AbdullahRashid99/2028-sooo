@@ -26,7 +26,7 @@ const RenderName = () => (
     className="text-[14px] md:text-[22px] font-semibold text-white/40 tracking-[0.3em] uppercase leading-none select-none pointer-events-none"
     style={{ textShadow: '0 0 2px rgba(0,0,0,0.4)' }}
   >
-    Abdullah Rashid
+    Rashid
   </span>
 );
 
@@ -83,7 +83,7 @@ const MetricBadge = ({ label, value }) => (
 // --- Personal Info ---
 const personalInfo = {
   name: "Abdullah Rashid",
-  title: "E-Com Media Buyer | Shopify Developer | Google Certificated Digital Marketer & E-commerce expert",
+  title: "Senior Media Buyer | Shopify Developer | Google Certificated Digital Marketer & E-commerce expert",
   linkedin: "https://www.linkedin.com/in/abdullah-rash-id/",
   whatsapp: "http://wa.me/+201025030220",
   tiktok: "https://www.tiktok.com/",
@@ -112,13 +112,15 @@ const skillsData = [
 ];
 
 // --- Cases Data (Before & After Us Section) ---
+// تم تعديل هذا القسم لإضافة صورتين لكل Case (صورة قبل وصورة بعد)
 const caseStudiesData = [
   {
     id: 1,
     title: "Case 1",
     niche: "Fashion & Apparel",
     note: "Scaled from scratch to high profitable margins in 3 months.",
-    image: "https://i.postimg.cc/C5GsYm88/11.png",
+    imageBefore: "https://i.postimg.cc/C5GsYm88/11.png", // ضع رابط صورة قبل هنا
+    imageAfter: "https://i.postimg.cc/C5GsYm88/11.png",  // ضع رابط صورة بعد هنا
     metrics: [
       { label: "Conversion Rate", value: "4.1%" },
       { label: "CPA Reduction", value: "-42%" },
@@ -130,7 +132,8 @@ const caseStudiesData = [
     title: "Case 2",
     niche: "Beauty & Cosmetics",
     note: "Optimized ad creatives and landing page to boost AOV.",
-    image: "https://i.postimg.cc/wMXQH0N1/8.png",
+    imageBefore: "https://i.postimg.cc/wMXQH0N1/8.png",
+    imageAfter: "https://i.postimg.cc/wMXQH0N1/8.png",
     metrics: [
       { label: "CPM", value: "$4.20" },
       { label: "Total Sales", value: "$125,000" },
@@ -142,7 +145,8 @@ const caseStudiesData = [
     title: "Case 3",
     niche: "Electronics",
     note: "Targeted retargeting campaigns resulted in huge drop in CPP.",
-    image: "https://i.postimg.cc/qqsx0jK6/10.png",
+    imageBefore: "https://i.postimg.cc/qqsx0jK6/10.png",
+    imageAfter: "https://i.postimg.cc/qqsx0jK6/10.png",
     metrics: [
       { label: "CPP", value: "$12.5" },
       { label: "AOV", value: "$85" },
@@ -154,7 +158,8 @@ const caseStudiesData = [
     title: "Case 4",
     niche: "Home & Garden",
     note: "Restructured the entire Google Ads and Shopify store.",
-    image: "https://i.postimg.cc/L5t3RNPm/1.png",
+    imageBefore: "https://i.postimg.cc/L5t3RNPm/1.png",
+    imageAfter: "https://i.postimg.cc/L5t3RNPm/1.png",
     metrics: [
       { label: "ROAS", value: "6.1x" },
       { label: "CPA Reduction", value: "-38%" },
@@ -335,8 +340,8 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
             >
               <img src={src} className="w-full h-full object-cover" alt="Cert" draggable={false} style={protectionStyles} />
             </motion.div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
       <AnimatePresence>
         {zoomSrc && <GalleryModal images={images} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
@@ -414,12 +419,10 @@ const ReelsBannerStrip = ({ items, reverse, onImageClick }) => {
         {duplicated.map((item, i) => (
           <div key={i} className="w-[75vw] sm:w-[45vw] md:w-[30vw] lg:w-[22vw] flex-shrink-0 px-3 md:px-4 flex flex-col items-center">
             
-            {/* Dynamic Text Above Case */}
             <p className="text-teal-400 text-sm md:text-base font-semibold mb-3 text-center px-2">
               {item.description}
             </p>
 
-            {/* Reels Ratio Container (9:16) */}
             <motion.div 
               className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-neutral-800 bg-black cursor-pointer shadow-2xl relative"
               whileHover={{ scale: 1.02 }}
@@ -444,8 +447,6 @@ const ReelsBannerStrip = ({ items, reverse, onImageClick }) => {
 
 const MultiStripBanners = () => {
   const [zoomSrc, setZoomSrc] = useState(null);
-  
-  // Extracting just the images URLs for the gallery viewer
   const imagesList = resultsCasesData.map(item => item.src);
 
   const onOpenFromStrip = (src) => {
@@ -455,7 +456,6 @@ const MultiStripBanners = () => {
 
   return (
     <div className="space-y-4 md:space-y-8">
-      {/* We only kept ONE strip here and styled it as requested */}
       <ReelsBannerStrip items={resultsCasesData} reverse={false} onImageClick={onOpenFromStrip} />
       
       <AnimatePresence>
@@ -465,11 +465,89 @@ const MultiStripBanners = () => {
   );
 };
 
+// --- BEFORE / AFTER SLIDER COMPONENT ---
+const BeforeAfterSlider = ({ beforeImage, afterImage }) => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const containerRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleMove = (clientX) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    const percent = (x / rect.width) * 100;
+    setSliderPosition(percent);
+  };
+
+  const onPointerDown = (e) => {
+    setIsDragging(true);
+    handleMove(e.clientX || (e.touches && e.touches[0].clientX));
+  };
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+    handleMove(e.clientX || (e.touches && e.touches[0].clientX));
+  };
+
+  const onPointerUp = () => setIsDragging(false);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full max-w-3xl h-[400px] md:h-[500px] rounded-2xl overflow-hidden cursor-ew-resize select-none border border-neutral-800 bg-neutral-900 shadow-xl touch-none"
+      onMouseDown={onPointerDown}
+      onMouseMove={onPointerMove}
+      onMouseUp={onPointerUp}
+      onMouseLeave={onPointerUp}
+      onTouchStart={onPointerDown}
+      onTouchMove={onPointerMove}
+      onTouchEnd={onPointerUp}
+    >
+      <WatermarkWrapper>
+        {/* Base Image (After) */}
+        <img
+          src={afterImage}
+          alt="After"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          draggable={false}
+          style={protectionStyles}
+        />
+
+        {/* Overlay Image (Before) */}
+        <img
+          src={beforeImage}
+          alt="Before"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          style={{ ...protectionStyles, clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+          draggable={false}
+        />
+
+        {/* Slider Line & Button */}
+        <div
+          className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize pointer-events-none z-10"
+          style={{ left: `calc(${sliderPosition}% - 2px)` }}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+            <ChevronLeft className="text-black w-4 h-4 -mr-0.5" />
+            <ChevronRight className="text-black w-4 h-4 -ml-0.5" />
+          </div>
+        </div>
+
+        {/* Labels */}
+        <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-medium pointer-events-none z-10">
+          Before
+        </div>
+        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-medium pointer-events-none z-10">
+          After
+        </div>
+      </WatermarkWrapper>
+    </div>
+  );
+};
+
 // --- TABBED CASES COMPONENT (Before & After Us) ---
 const InteractiveCasesView = () => {
   const [activeCaseId, setActiveCaseId] = useState(1);
-  const [zoomSrc, setZoomSrc] = useState(null);
-
   const activeCase = caseStudiesData.find(c => c.id === activeCaseId) || caseStudiesData[0];
 
   return (
@@ -504,7 +582,6 @@ const InteractiveCasesView = () => {
       >
         <h3 className="text-2xl font-bold text-white mb-1">{activeCase.title}</h3>
         
-        {/* Niche & Notes Text Lines */}
         <p className="text-teal-400 font-semibold mb-2">
           Industry / Niche: <span className="text-white">{activeCase.niche}</span>
         </p>
@@ -521,28 +598,12 @@ const InteractiveCasesView = () => {
           ))}
         </div>
 
-        {/* Case Image */}
-        <div 
-          className="w-full max-w-3xl rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-xl"
-          onClick={() => setZoomSrc({ start: 0 })}
-        >
-          <WatermarkWrapper>
-            <img 
-              src={activeCase.image} 
-              alt={activeCase.title} 
-              className="w-full h-auto object-contain max-h-[500px]"
-              draggable={false}
-              style={protectionStyles}
-            />
-          </WatermarkWrapper>
-        </div>
+        {/* Slider Component implementation */}
+        <BeforeAfterSlider 
+          beforeImage={activeCase.imageBefore} 
+          afterImage={activeCase.imageAfter} 
+        />
       </motion.div>
-
-      <AnimatePresence>
-        {zoomSrc && (
-          <GalleryModal images={[activeCase.image]} startIndex={0} onClose={() => setZoomSrc(null)} />
-        )}
-      </AnimatePresence>
     </div>
   );
 };
@@ -633,12 +694,12 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section (The Single Reels Strip) */}
+        {/* Results Section */}
         <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
           <MultiStripBanners />
         </SectionWrapper>
 
-        {/* Before & After Us Section (The Interactive Tabs) */}
+        {/* Before & After Us Section */}
         <SectionWrapper ref={sectionRefs['before-after']} id="before-after" title="Before & After Us">
           <InteractiveCasesView />
         </SectionWrapper>
