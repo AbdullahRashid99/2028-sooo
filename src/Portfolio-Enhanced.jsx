@@ -112,15 +112,14 @@ const skillsData = [
 ];
 
 // --- Cases Data (Before & After Us Section) ---
-// تم تعديل هذا القسم لإضافة صورتين لكل Case (صورة قبل وصورة بعد)
 const caseStudiesData = [
   {
     id: 1,
     title: "Case 1",
     niche: "Fashion & Apparel",
     note: "Scaled from scratch to high profitable margins in 3 months.",
-    imageBefore: "https://i.postimg.cc/C5GsYm88/11.png", // ضع رابط صورة قبل هنا
-    imageAfter: "https://i.postimg.cc/C5GsYm88/11.png",  // ضع رابط صورة بعد هنا
+    imageBefore: "https://i.postimg.cc/C5GsYm88/11.png", 
+    imageAfter: "https://i.postimg.cc/C5GsYm88/11.png",  
     metrics: [
       { label: "Conversion Rate", value: "4.1%" },
       { label: "CPA Reduction", value: "-42%" },
@@ -340,8 +339,8 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
             >
               <img src={src} className="w-full h-full object-cover" alt="Cert" draggable={false} style={protectionStyles} />
             </motion.div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <AnimatePresence>
         {zoomSrc && <GalleryModal images={images} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
