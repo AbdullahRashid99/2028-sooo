@@ -345,7 +345,30 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   );
 };
 
-// --- MULTI-STRIP RESULTS LOGIC ---
+// --- SINGLE REELS STRIP RESULTS LOGIC ---
+const resultsCasesData = [
+  { 
+    src: "https://i.postimg.cc/L5t3RNPm/1.png", 
+    description: "Case 1: Scaled ROAS to 6.1x with $240K Sales" 
+  },
+  { 
+    src: "https://i.postimg.cc/D0rPFBGm/5.png", 
+    description: "Case 2: Consistent 300% Growth in E-commerce Revenue" 
+  },
+  { 
+    src: "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png", 
+    description: "Case 3: Achieved $450K+ Monthly Revenue" 
+  },
+  { 
+    src: "https://i.postimg.cc/cCRBZX34/2.png", 
+    description: "Case 4: Dropped CPA by 40% globally in 3 weeks" 
+  },
+  { 
+    src: "https://i.postimg.cc/7h3nDmzH/4.png", 
+    description: "Case 5: Dominated the niche market efficiently" 
+  }
+];
+
 function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPaused = false }) {
   useEffect(() => {
     const el = containerRef.current;
@@ -373,31 +396,43 @@ function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPau
   }, [speed, reverse, isPaused]);
 }
 
-const BannerStrip = ({ images, reverse, onImageClick }) => {
+const ReelsBannerStrip = ({ items, reverse, onImageClick }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
-  const duplicated = [...images, ...images];
-  useAutoScrollResults(containerRef, { speed: 100, reverse, isPaused });
+  const duplicated = [...items, ...items];
+  useAutoScrollResults(containerRef, { speed: 80, reverse, isPaused });
 
   return (
     <div 
       ref={containerRef}
-      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none"
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none py-6"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       style={{ scrollbarWidth: 'none' }}
     >
-      <div className="flex">
-        {duplicated.map((src, i) => (
-          <div key={i} className="w-[85vw] md:w-[60vw] lg:w-[45vw] flex-shrink-0 px-2 md:px-4 py-4">
+      <div className="flex items-end">
+        {duplicated.map((item, i) => (
+          <div key={i} className="w-[75vw] sm:w-[45vw] md:w-[30vw] lg:w-[22vw] flex-shrink-0 px-3 md:px-4 flex flex-col items-center">
+            
+            {/* Dynamic Text Above Case */}
+            <p className="text-teal-400 text-sm md:text-base font-semibold mb-3 text-center px-2">
+              {item.description}
+            </p>
+
+            {/* Reels Ratio Container (9:16) */}
             <motion.div 
-              className="w-full h-[280px] md:h-[450px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
+              className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-neutral-800 bg-black cursor-pointer shadow-2xl relative"
               whileHover={{ scale: 1.02 }}
-              onClick={() => onImageClick(src)}
+              onClick={() => onImageClick(item.src)}
             >
               <WatermarkWrapper>
-                {/* تم تعديل الدقة لتكون object-contain للأبعاد الحقيقية */}
-                <img src={src} alt="Result" className="w-full h-full object-contain" draggable={false} style={protectionStyles} />
+                <img 
+                  src={item.src} 
+                  alt="Result Case" 
+                  className="w-full h-full object-contain" 
+                  draggable={false} 
+                  style={protectionStyles} 
+                />
               </WatermarkWrapper>
             </motion.div>
           </div>
@@ -409,22 +444,22 @@ const BannerStrip = ({ images, reverse, onImageClick }) => {
 
 const MultiStripBanners = () => {
   const [zoomSrc, setZoomSrc] = useState(null);
-  const row2 = ["https://i.postimg.cc/L5t3RNPm/1.png", "https://i.postimg.cc/D0rPFBGm/5.png", "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png", "https://i.postimg.cc/cCRBZX34/2.png", "https://i.postimg.cc/7h3nDmzH/4.png"];
   
-  const combined = [...row2,];
+  // Extracting just the images URLs for the gallery viewer
+  const imagesList = resultsCasesData.map(item => item.src);
 
   const onOpenFromStrip = (src) => {
-    const idx = combined.indexOf(src);
+    const idx = imagesList.indexOf(src);
     setZoomSrc({ start: idx !== -1 ? idx : 0 });
   };
 
   return (
     <div className="space-y-4 md:space-y-8">
-      <BannerStrip images={row1} reverse={false} onImageClick={onOpenFromStrip} />
-      <BannerStrip images={row2} reverse={true} onImageClick={onOpenFromStrip} />
-      <BannerStrip images={row3} reverse={false} onImageClick={onOpenFromStrip} />
+      {/* We only kept ONE strip here and styled it as requested */}
+      <ReelsBannerStrip items={resultsCasesData} reverse={false} onImageClick={onOpenFromStrip} />
+      
       <AnimatePresence>
-        {zoomSrc && <GalleryModal images={combined} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
+        {zoomSrc && <GalleryModal images={imagesList} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
       </AnimatePresence>
     </div>
   );
@@ -598,7 +633,7 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section (The Multi-Strips) */}
+        {/* Results Section (The Single Reels Strip) */}
         <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
           <MultiStripBanners />
         </SectionWrapper>
