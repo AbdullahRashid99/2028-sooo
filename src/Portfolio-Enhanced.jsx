@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Menu, X, Linkedin, Phone, LineChart,
   GraduationCap, Code, BarChart2,
-  ArrowUp
+  ArrowUp, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 import { SiTiktok } from 'react-icons/si';
@@ -33,7 +33,7 @@ const RenderName = () => (
 // --- Watermark Component ---
 const WatermarkWrapper = ({ children }) => {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden w-full h-full">
       {children}
 
       <div className="absolute inset-0 pointer-events-none select-none opacity-50">
@@ -69,7 +69,6 @@ const Button = ({ children, className, ...props }) => (
   </button>
 );
 
-// --- Metric Badge Component ---
 const MetricBadge = ({ label, value }) => (
   <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#031d1d]/90 border border-[#0d5c56] text-teal-400 backdrop-blur-md shadow-lg text-xs md:text-sm font-semibold">
     <div className="w-4 h-4 rounded-full border border-teal-400 flex items-center justify-center text-teal-300 text-[10px] font-bold">
@@ -93,7 +92,8 @@ const personalInfo = {
 
 const sections = [
   { id: "skills", title: "Skills" },
-  { id: "projects", title: "Before & After Us" },
+  { id: "results", title: "Results" },
+  { id: "before-after", title: "Before & After Us" },
 ];
 
 const skillsData = [
@@ -111,11 +111,13 @@ const skillsData = [
   "Websites CRO"
 ];
 
-// --- Cases Data ---
+// --- Cases Data (Before & After Us Section) ---
 const caseStudiesData = [
   {
     id: 1,
     title: "Case 1",
+    niche: "Fashion & Apparel",
+    note: "Scaled from scratch to high profitable margins in 3 months.",
     image: "https://i.postimg.cc/C5GsYm88/11.png",
     metrics: [
       { label: "Conversion Rate", value: "4.1%" },
@@ -126,6 +128,8 @@ const caseStudiesData = [
   {
     id: 2,
     title: "Case 2",
+    niche: "Beauty & Cosmetics",
+    note: "Optimized ad creatives and landing page to boost AOV.",
     image: "https://i.postimg.cc/wMXQH0N1/8.png",
     metrics: [
       { label: "CPM", value: "$4.20" },
@@ -136,9 +140,11 @@ const caseStudiesData = [
   {
     id: 3,
     title: "Case 3",
+    niche: "Electronics",
+    note: "Targeted retargeting campaigns resulted in huge drop in CPP.",
     image: "https://i.postimg.cc/qqsx0jK6/10.png",
     metrics: [
-      { label: "CPP (Cost Per Purchase)", value: "$12.5" },
+      { label: "CPP", value: "$12.5" },
       { label: "AOV", value: "$85" },
       { label: "Conversion Rate", value: "3.9%" }
     ]
@@ -146,71 +152,13 @@ const caseStudiesData = [
   {
     id: 4,
     title: "Case 4",
+    niche: "Home & Garden",
+    note: "Restructured the entire Google Ads and Shopify store.",
     image: "https://i.postimg.cc/L5t3RNPm/1.png",
     metrics: [
       { label: "ROAS", value: "6.1x" },
       { label: "CPA Reduction", value: "-38%" },
       { label: "Total Sales", value: "$240,000" }
-    ]
-  },
-  {
-    id: 5,
-    title: "Case 5",
-    image: "https://i.postimg.cc/D0rPFBGm/5.png",
-    metrics: [
-      { label: "CPM", value: "$3.50" },
-      { label: "CPP", value: "$9.80" },
-      { label: "Profit Margin", value: "+32%" }
-    ]
-  },
-  {
-    id: 6,
-    title: "Case 6",
-    image: "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png",
-    metrics: [
-      { label: "Total Sales", value: "$195,000" },
-      { label: "Conversion Rate", value: "4.8%" },
-      { label: "ROAS", value: "5.7x" }
-    ]
-  },
-  {
-    id: 7,
-    title: "Case 7",
-    image: "https://i.postimg.cc/cCRBZX34/2.png",
-    metrics: [
-      { label: "CPP", value: "$11.20" },
-      { label: "CPA Reduction", value: "-45%" },
-      { label: "AOV Growth", value: "+28%" }
-    ]
-  },
-  {
-    id: 8,
-    title: "Case 8",
-    image: "https://i.postimg.cc/7h3nDmzH/4.png",
-    metrics: [
-      { label: "CPM", value: "$3.90" },
-      { label: "ROAS", value: "7.1x" },
-      { label: "Total Sales", value: "$310,000" }
-    ]
-  },
-  {
-    id: 9,
-    title: "Case 9",
-    image: "https://i.postimg.cc/Zn8xZVNp/12.png",
-    metrics: [
-      { label: "Conversion Rate", value: "5.3%" },
-      { label: "CPP", value: "$8.90" },
-      { label: "CPA Reduction", value: "-51%" }
-    ]
-  },
-  {
-    id: 10,
-    title: "Case 10",
-    image: "https://i.postimg.cc/Xqfk3Q5G/9.png",
-    metrics: [
-      { label: "Total Sales", value: "$420,000" },
-      { label: "ROAS", value: "6.4x" },
-      { label: "CPM", value: "$4.10" }
     ]
   }
 ];
@@ -273,34 +221,66 @@ const Navbar = ({ activeSection }) => {
 // --- Gallery Modal ---
 const GalleryModal = ({ images = [], startIndex = 0, onClose }) => {
   const [index, setIndex] = useState(startIndex);
+  const containerRef = useRef(null);
 
   useEffect(() => { setIndex(startIndex); }, [startIndex]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowRight') setIndex(i => (i + 1) % images.length);
+      if (e.key === 'ArrowLeft') setIndex(i => (i - 1 + images.length) % images.length);
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [images.length, onClose]);
 
   if (!images.length) return null;
 
   return (
-    <motion.div className="fixed inset-0 bg-black/90 flex justify-center items-center z-[100] p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <motion.div className="relative w-full flex items-center justify-center max-w-5xl" initial={{ scale: 0.95 }} animate={{ scale: 1 }} onClick={(e) => e.stopPropagation()}>
+    <motion.div className="fixed inset-0 bg-black/95 flex justify-center items-center z-[100] p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+      <motion.div className="relative w-full flex items-center justify-center max-w-7xl" initial={{ scale: 0.95 }} animate={{ scale: 1 }} onClick={(e) => e.stopPropagation()} ref={containerRef}>
         <button
           type="button"
-          onClick={onClose}
-          aria-label="Close"
+          onClick={(e) => { e.stopPropagation(); onClose(); }}
           className="absolute top-3 right-3 z-50 bg-black/60 hover:bg-black/70 p-2 rounded-md text-white"
         >
           <X />
         </button>
 
-        <div className="max-w-full max-h-[90vh] flex items-center justify-center rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800 p-4">
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); setIndex(i => (i - 1 + images.length) % images.length); }}
+          className="hidden md:flex absolute left-3 z-50 items-center justify-center h-10 w-10 rounded-full bg-black/40 hover:bg-black/60 text-white"
+        >
+          <ChevronLeft />
+        </button>
+
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); setIndex(i => (i + 1) % images.length); }}
+          className="hidden md:flex absolute right-3 z-50 items-center justify-center h-10 w-10 rounded-full bg-black/40 hover:bg-black/60 text-white"
+        >
+          <ChevronRight />
+        </button>
+
+        <div className="max-w-full max-h-[90vh] flex items-center justify-center rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800 p-2 md:p-4">
           <WatermarkWrapper>
-            <img src={images[index]} alt={`zoom-${index}`} className="object-contain max-h-[80vh]" draggable={false} style={protectionStyles} />
+            <img src={images[index]} alt={`zoom-${index}`} className="object-contain max-h-[85vh] w-full h-full" draggable={false} style={protectionStyles} />
           </WatermarkWrapper>
+        </div>
+
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-50 flex gap-2">
+          {images.map((_, i) => (
+            <button key={i} onClick={(e) => { e.stopPropagation(); setIndex(i); }} className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-teal-400' : 'bg-white/30'}`} type="button" />
+          ))}
         </div>
       </motion.div>
     </motion.div>
   );
 };
 
-// --- CERTIFICATIONS & MIDDLE SLIDER ---
+// --- CERTIFICATIONS SECTION ---
 const CERT_IMAGES = [
   'https://i.postimg.cc/rsxncdPk/65952225.jpg',
   'https://i.postimg.cc/B6dYd5MJ/6NXTTFXQ7B77-page-0001.jpg',
@@ -311,32 +291,6 @@ const CERT_IMAGES = [
   'https://i.postimg.cc/BZKw2ynt/Google-Certification.png',
 ];
 
-// --- MIDDLE MARQUEE BANNER TAPE (شريط الكلمات المفتاحية المتحرك) ---
-const MarqueeTape = () => {
-  const items = [
-    "Scale Your E-Commerce",
-    "High ROAS Strategies",
-    "Data-Driven Growth",
-    "CRO & Website Optimization",
-    "Shopify Expert",
-    "Google Certified Marketer",
-    "Media Buying Master"
-  ];
-  return (
-    <div className="w-full overflow-hidden bg-gradient-to-r from-teal-950 via-neutral-900 to-teal-950 border-y border-teal-800/40 py-3 my-8 relative select-none">
-      <div className="flex whitespace-nowrap animate-marquee">
-        {[...items, ...items, ...items].map((text, idx) => (
-          <span key={idx} className="mx-6 text-sm md:text-base font-semibold text-teal-300 tracking-wider flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
-            {text}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// --- MIDDLE IMAGE SLIDER (الشريط المتحرك الأصلي) ---
 const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -363,8 +317,8 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   }, [speed, isPaused]);
 
   return (
-    <div className="w-full py-8">
-      <div className="max-w-6xl mx-auto overflow-hidden">
+    <div className="w-full py-12">
+      <div className="max-w-5xl mx-auto overflow-hidden">
         <h3 className="text-xl md:text-2xl font-bold mb-6 text-center text-amber-400">Google Certifications</h3>
         <div 
           ref={containerRef}
@@ -375,25 +329,104 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
           {duplicated.map((src, i) => (
             <motion.div 
               key={i} 
-              className="flex-shrink-0 w-48 h-32 md:w-64 md:h-40 bg-neutral-800 rounded-xl overflow-hidden cursor-pointer border border-neutral-700 shadow-lg hover:border-teal-400"
+              className="flex-shrink-0 w-48 h-32 md:w-64 md:h-40 bg-neutral-800 rounded-xl overflow-hidden cursor-pointer border border-neutral-700"
               whileHover={{ scale: 1.05 }}
-              onClick={() => setZoomSrc(src)}
+              onClick={() => setZoomSrc({ start: images.indexOf(src) })}
             >
-              <img 
-                src={src} 
-                className="w-full h-full object-cover" 
-                alt="Cert" 
-                draggable={false}
-                style={protectionStyles} 
-              />
+              <img src={src} className="w-full h-full object-cover" alt="Cert" draggable={false} style={protectionStyles} />
             </motion.div>
           ))}
         </div>
       </div>
       <AnimatePresence>
-        {zoomSrc && (
-          <GalleryModal images={images} startIndex={images.indexOf(zoomSrc)} onClose={() => setZoomSrc(null)} />
-        )}
+        {zoomSrc && <GalleryModal images={images} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// --- MULTI-STRIP RESULTS LOGIC ---
+function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPaused = false }) {
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    let lastTime = 0;
+    let rafId;
+    const step = (ts) => {
+      if (!lastTime) lastTime = ts;
+      const dt = (ts - lastTime) / 1000;
+      lastTime = ts;
+      if (!isPaused) {
+        const move = speed * dt;
+        if (reverse) {
+          el.scrollLeft -= move;
+          if (el.scrollLeft <= 0) el.scrollLeft = el.scrollWidth / 2;
+        } else {
+          el.scrollLeft += move;
+          if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft = 0;
+        }
+      }
+      rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [speed, reverse, isPaused]);
+}
+
+const BannerStrip = ({ images, reverse, onImageClick }) => {
+  const containerRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const duplicated = [...images, ...images];
+  useAutoScrollResults(containerRef, { speed: 100, reverse, isPaused });
+
+  return (
+    <div 
+      ref={containerRef}
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      style={{ scrollbarWidth: 'none' }}
+    >
+      <div className="flex">
+        {duplicated.map((src, i) => (
+          <div key={i} className="w-[85vw] md:w-[60vw] lg:w-[45vw] flex-shrink-0 px-2 md:px-4 py-4">
+            <motion.div 
+              className="w-full h-[280px] md:h-[450px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
+              whileHover={{ scale: 1.02 }}
+              onClick={() => onImageClick(src)}
+            >
+              <WatermarkWrapper>
+                {/* تم تعديل الدقة لتكون object-contain للأبعاد الحقيقية */}
+                <img src={src} alt="Result" className="w-full h-full object-contain" draggable={false} style={protectionStyles} />
+              </WatermarkWrapper>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const MultiStripBanners = () => {
+  const [zoomSrc, setZoomSrc] = useState(null);
+  const row1 = ["https://i.postimg.cc/C5GsYm88/11.png", "https://i.postimg.cc/wMXQH0N1/8.png", "https://i.postimg.cc/qqsx0jK6/10.png"];
+  const row2 = ["https://i.postimg.cc/L5t3RNPm/1.png", "https://i.postimg.cc/D0rPFBGm/5.png", "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png", "https://i.postimg.cc/cCRBZX34/2.png", "https://i.postimg.cc/7h3nDmzH/4.png"];
+  const row3 = ["https://i.postimg.cc/Zn8xZVNp/12.png", "https://i.postimg.cc/Xqfk3Q5G/9.png"];
+  
+  const combined = [...row1, ...row2, ...row3];
+
+  const onOpenFromStrip = (src) => {
+    const idx = combined.indexOf(src);
+    setZoomSrc({ start: idx !== -1 ? idx : 0 });
+  };
+
+  return (
+    <div className="space-y-4 md:space-y-8">
+      <BannerStrip images={row1} reverse={false} onImageClick={onOpenFromStrip} />
+      <BannerStrip images={row2} reverse={true} onImageClick={onOpenFromStrip} />
+      <BannerStrip images={row3} reverse={false} onImageClick={onOpenFromStrip} />
+      <AnimatePresence>
+        {zoomSrc && <GalleryModal images={combined} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
       </AnimatePresence>
     </div>
   );
@@ -417,9 +450,9 @@ const InteractiveCasesView = () => {
               key={caseItem.id}
               onClick={() => setActiveCaseId(caseItem.id)}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 flex-shrink-0 border ${
-                isActive
-                  ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.4)]'
-                  : 'bg-neutral-900/80 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700'
+                isActive 
+                  ? 'bg-teal-500/20 border-teal-400 text-teal-300' 
+                  : 'bg-neutral-800/50 border-neutral-700 text-neutral-400 hover:bg-neutral-800'
               }`}
             >
               {caseItem.title}
@@ -428,90 +461,76 @@ const InteractiveCasesView = () => {
         })}
       </div>
 
-      {/* Selected Case Container */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeCase.id}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
-          transition={{ duration: 0.25 }}
-          className="mt-6 flex flex-col items-center"
-        >
-          {/* Metrics Badges Container directly ABOVE the image */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
-            {activeCase.metrics.map((metric, idx) => (
-              <MetricBadge key={idx} label={metric.label} value={metric.value} />
-            ))}
-          </div>
+      {/* Case Content */}
+      <motion.div 
+        key={activeCase.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mt-6 flex flex-col items-center text-center"
+      >
+        <h3 className="text-2xl font-bold text-white mb-1">{activeCase.title}</h3>
+        
+        {/* Niche & Notes Text Lines */}
+        <p className="text-teal-400 font-semibold mb-2">
+          Industry / Niche: <span className="text-white">{activeCase.niche}</span>
+        </p>
+        {activeCase.note && (
+          <p className="text-neutral-300 max-w-2xl mx-auto mb-6">
+            Note: {activeCase.note}
+          </p>
+        )}
 
-          {/* Case Image Card */}
-          <motion.div
-            className="w-full max-w-2xl h-[320px] md:h-[450px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
-            whileHover={{ scale: 1.01 }}
-            onClick={() => setZoomSrc(activeCase.image)}
-          >
-            <WatermarkWrapper>
-              <img
-                src={activeCase.image}
-                alt={activeCase.title}
-                className="w-full h-full object-contain"
-                draggable={false}
-                style={protectionStyles}
-              />
-            </WatermarkWrapper>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
+        {/* Metrics Badges */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+          {activeCase.metrics.map((m, idx) => (
+            <MetricBadge key={idx} label={m.label} value={m.value} />
+          ))}
+        </div>
+
+        {/* Case Image */}
+        <div 
+          className="w-full max-w-3xl rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-xl"
+          onClick={() => setZoomSrc({ start: 0 })}
+        >
+          <WatermarkWrapper>
+            <img 
+              src={activeCase.image} 
+              alt={activeCase.title} 
+              className="w-full h-auto object-contain max-h-[500px]"
+              draggable={false}
+              style={protectionStyles}
+            />
+          </WatermarkWrapper>
+        </div>
+      </motion.div>
 
       <AnimatePresence>
         {zoomSrc && (
-          <GalleryModal
-            images={caseStudiesData.map(c => c.image)}
-            startIndex={caseStudiesData.findIndex(c => c.image === zoomSrc)}
-            onClose={() => setZoomSrc(null)}
-          />
+          <GalleryModal images={[activeCase.image]} startIndex={0} onClose={() => setZoomSrc(null)} />
         )}
       </AnimatePresence>
     </div>
   );
 };
 
-// --- Services Modal ---
-function ServicesModal({ onClose }) {
-  const servicesList = [
-    { title: 'Startup', icon: <BarChart2 size={48} />, link: 'https://docs.google.com/forms/d/e/1FAIpQLSdEBwP65M40klTsS3_3eez_y8Sjj5lbLI276pYZ1omnuF2ZVQ/viewform' },
-    { title: 'Scale', icon: <LineChart size={48} />, link: 'https://docs.google.com/forms/d/e/1FAIpQLSfpnHDVpZeI_7Q5srnURXlnPzfLUhuyiPzptUeqj77uyeeRVg/viewform' },
-  ];
-  return (
-    <motion.div className="fixed inset-0 bg-black/90 flex justify-center items-center z-[100] p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <motion.div className="bg-neutral-900 p-8 rounded-2xl w-full max-w-4xl" initial={{ scale: 0.95 }} animate={{ scale: 1 }} onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-3xl font-bold mb-6 text-center text-teal-400">For E-Commerce</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {servicesList.map(({ title, icon, link }, index) => (
-            <motion.div key={index} className="bg-neutral-800 rounded-lg p-6 flex flex-col items-center text-center shadow-lg hover:shadow-teal-500/20 transition-all cursor-pointer" whileHover={{ y: -5 }}>
-              <div className="text-teal-400 mb-4">{icon}</div>
-              <h3 className="text-xl font-semibold mb-4">{title}</h3>
-              <a href={link} target="_blank" rel="noopener noreferrer" className="w-full">
-                <Button className="bg-teal-500 w-full text-white hover:bg-teal-600">Start</Button>
-              </a>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
 // --- Main Portfolio ---
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('home');
-  const [showServices, setShowServices] = useState(false);
-  const sectionRefs = { home: useRef(null), skills: useRef(null), projects: useRef(null) };
+  const sectionRefs = { 
+    home: useRef(null), 
+    skills: useRef(null), 
+    results: useRef(null),
+    'before-after': useRef(null)
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      entries => entries.forEach(entry => entry.isIntersecting && setActiveSection(entry.target.id)),
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
       { rootMargin: '-30% 0px -70% 0px' }
     );
     Object.values(sectionRefs).forEach(ref => ref.current && observer.observe(ref.current));
@@ -561,15 +580,12 @@ export default function Portfolio() {
             Abdullah Rashid<br /> Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-500">Growth</span> Partner.
           </motion.h1>
           <p className="text-lg md:text-xl text-neutral-300 mb-8">{personalInfo.title}</p>
-          <Button className="bg-teal-500 hover:bg-teal-600 text-white shadow-[0_0_15px_rgba(20,184,166,0.4)]" onClick={() => setShowServices(true)}>Start Here</Button>
         </section>
 
         <SocialCircle />
-        
-        {/* الشريط المتحرك والأوسمة في المنتصف */}
-        <MarqueeTape />
         <ImageSlider />
 
+        {/* Skills Section */}
         <SectionWrapper ref={sectionRefs.skills} id="skills" title="Skills">
           <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
             {skillsData.map((skill, i) => (
@@ -584,8 +600,13 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* القسم الرئيسي المعدل الاسم إلى Before & After Us */}
-        <SectionWrapper ref={sectionRefs.projects} id="projects" title="Before & After Us">
+        {/* Results Section (The Multi-Strips) */}
+        <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
+          <MultiStripBanners />
+        </SectionWrapper>
+
+        {/* Before & After Us Section (The Interactive Tabs) */}
+        <SectionWrapper ref={sectionRefs['before-after']} id="before-after" title="Before & After Us">
           <InteractiveCasesView />
         </SectionWrapper>
 
@@ -627,8 +648,6 @@ export default function Portfolio() {
         <div className="flex justify-center gap-6 mb-4">
           <a
             href={personalInfo.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:text-teal-400 hover:bg-neutral-800 transition-all"
           >
             <Linkedin size={20} />
@@ -636,8 +655,6 @@ export default function Portfolio() {
 
           <a
             href={personalInfo.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:text-green-500 hover:bg-neutral-800 transition-all"
           >
             <Phone size={20} />
@@ -645,8 +662,6 @@ export default function Portfolio() {
 
           <a
             href={personalInfo.tiktok}
-            target="_blank"
-            rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:text-pink-500 hover:bg-neutral-800 transition-all"
           >
             <SiTiktok size={18} />
@@ -658,7 +673,6 @@ export default function Portfolio() {
         </p>
       </footer>
       <ScrollToTopButton />
-      <AnimatePresence>{showServices && <ServicesModal onClose={() => setShowServices(false)} />}</AnimatePresence>
     </div>
   );
 }
@@ -666,7 +680,7 @@ export default function Portfolio() {
 function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const toggle = () => setVisible(window.scrollY > 300);
+    const toggle = () => setVisible(window.pageYOffset > 300);
     window.addEventListener('scroll', toggle);
     return () => window.removeEventListener('scroll', toggle);
   }, []);
