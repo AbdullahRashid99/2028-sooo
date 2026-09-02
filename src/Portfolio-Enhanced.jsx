@@ -2,21 +2,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import {
-  Mail, User, Briefcase, Star, Folder, Menu, X, Send, Linkedin, Phone,
-  Award, Target, Megaphone, ShoppingCart, UserCheck, Building, LineChart,
-  Camera, GraduationCap, ArrowRight, Palette, Code, BarChart3,
-  Instagram, Dribbble, Twitter, ArrowUp,
-  ShoppingCart as IconShopify,
-  HelpCircle,
-  Users,
-  Layers,
-  BarChart2,
-  MoreHorizontal,
-  ChevronLeft, ChevronRight
+  Menu, X, Linkedin, Phone, LineChart,
+  GraduationCap, Code, BarChart2,
+  ArrowUp
 } from 'lucide-react';
 
 import { SiTiktok } from 'react-icons/si';
-import { motion, AnimatePresence, useInView, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Import SocialCircle component
 import SocialCircle from '../src/components/SocialCircle.jsx';
@@ -77,15 +69,15 @@ const Button = ({ children, className, ...props }) => (
   </button>
 );
 
-const Card = ({ children, className, ...props }) => (
-  <div className={`bg-neutral-900/80 border border-neutral-800 rounded-xl shadow-lg ${className}`} {...props}>
-    {children}
-  </div>
-);
-
-const CardContent = ({ children, className, ...props }) => (
-  <div className={`p-6 ${className}`} {...props}>
-    {children}
+// --- Metric Badge Component (Matching Exact Image Design) ---
+const MetricBadge = ({ label, value }) => (
+  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#031d1d]/90 border border-[#0d5c56] text-teal-400 backdrop-blur-md shadow-lg text-xs md:text-sm font-semibold">
+    <div className="w-4 h-4 rounded-full border border-teal-400 flex items-center justify-center text-teal-300 text-[10px] font-bold">
+      ✓
+    </div>
+    <span>
+      {label}: <strong className="text-white font-bold ml-1">{value}</strong>
+    </span>
   </div>
 );
 
@@ -95,6 +87,7 @@ const personalInfo = {
   title: "E-Com Media Buyer | Shopify Developer | Google Certificated Digital Marketer & E-commerce expert",
   linkedin: "https://www.linkedin.com/in/abdullah-rash-id/",
   whatsapp: "http://wa.me/+201025030220",
+  tiktok: "https://www.tiktok.com/", // تم إضافة الخاصية المفقودة
   profileImage: "https://i.postimg.cc/2574Ss9d/9c10a25ab53cc9bdf0a8fc20082d0868-tplv-tiktokx-cropcenter-1080-1080.jpg",
 };
 
@@ -103,7 +96,6 @@ const sections = [
   { id: "projects", title: "Results" },
 ];
 
-// --- Updated Skills Data ---
 const skillsData = [
   "Analytical Mindset",
   "Problem-Solver",
@@ -119,23 +111,109 @@ const skillsData = [
   "Websites CRO"
 ];
 
-// --- Animated Counter ---
-const AnimatedCounter = ({ value }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const motionValue = useSpring(0, { stiffness: 50, damping: 30 });
-  const [display, setDisplay] = useState('£0');
-
-  useEffect(() => {
-    const unsub = motionValue.on("change", (latest) => {
-      setDisplay(`£${Math.round(latest).toLocaleString()}+`);
-    });
-    if (isInView) motionValue.set(value);
-    return () => unsub();
-  }, [isInView, value, motionValue]);
-
-  return <span ref={ref}>{display}</span>;
-};
+// --- 10 Cases Data with 30 Metric Badges Variations ---
+const caseStudiesData = [
+  {
+    id: 1,
+    title: "Case 1",
+    image: "https://i.postimg.cc/C5GsYm88/11.png",
+    metrics: [
+      { label: "Conversion Rate", value: "4.1%" },
+      { label: "CPA Reduction", value: "-42%" },
+      { label: "ROAS", value: "4.8x" }
+    ]
+  },
+  {
+    id: 2,
+    title: "Case 2",
+    image: "https://i.postimg.cc/wMXQH0N1/8.png",
+    metrics: [
+      { label: "CPM", value: "$4.20" },
+      { label: "Total Sales", value: "$125,000" },
+      { label: "ROAS", value: "5.2x" }
+    ]
+  },
+  {
+    id: 3,
+    title: "Case 3",
+    image: "https://i.postimg.cc/qqsx0jK6/10.png",
+    metrics: [
+      { label: "CPP (Cost Per Purchase)", value: "$12.5" },
+      { label: "AOV", value: "$85" },
+      { label: "Conversion Rate", value: "3.9%" }
+    ]
+  },
+  {
+    id: 4,
+    title: "Case 4",
+    image: "https://i.postimg.cc/L5t3RNPm/1.png",
+    metrics: [
+      { label: "ROAS", value: "6.1x" },
+      { label: "CPA Reduction", value: "-38%" },
+      { label: "Total Sales", value: "$240,000" }
+    ]
+  },
+  {
+    id: 5,
+    title: "Case 5",
+    image: "https://i.postimg.cc/D0rPFBGm/5.png",
+    metrics: [
+      { label: "CPM", value: "$3.50" },
+      { label: "CPP", value: "$9.80" },
+      { label: "Profit Margin", value: "+32%" }
+    ]
+  },
+  {
+    id: 6,
+    title: "Case 6",
+    image: "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png",
+    metrics: [
+      { label: "Total Sales", value: "$195,000" },
+      { label: "Conversion Rate", value: "4.8%" },
+      { label: "ROAS", value: "5.7x" }
+    ]
+  },
+  {
+    id: 7,
+    title: "Case 7",
+    image: "https://i.postimg.cc/cCRBZX34/2.png",
+    metrics: [
+      { label: "CPP", value: "$11.20" },
+      { label: "CPA Reduction", value: "-45%" },
+      { label: "AOV Growth", value: "+28%" }
+    ]
+  },
+  {
+    id: 8,
+    title: "Case 8",
+    image: "https://i.postimg.cc/7h3nDmzH/4.png",
+    metrics: [
+      { label: "CPM", value: "$3.90" },
+      { label: "ROAS", value: "7.1x" },
+      { label: "Total Sales", value: "$310,000" }
+    ]
+  },
+  {
+    id: 9,
+    title: "Case 9",
+    image: "https://i.postimg.cc/Zn8xZVNp/12.png",
+    metrics: [
+      { label: "Conversion Rate", value: "5.3%" },
+      { label: "CPP", value: "$8.90" },
+      { label: "CPA Reduction", value: "-51%" }
+    ]
+  },
+  {
+    id: 10,
+    title: "Case 10",
+    image: "https://i.postimg.cc/Xqfk3Q5G/9.png",
+    metrics: [
+      { label: "Total Sales", value: "$420,000" },
+      { label: "ROAS", value: "6.4x" },
+      { label: "CPM", value: "$4.10" }
+    ]
+  }
+];
 
 // --- Section Wrapper ---
 const SectionWrapper = React.forwardRef(({ id, title, children, className }, ref) => (
@@ -193,125 +271,29 @@ const Navbar = ({ activeSection }) => {
 };
 
 // --- Gallery Modal ---
-const GalleryModal = ({ images = [], startIndex = 0, onClose, middleSet = new Set(), certMode = false }) => {
+const GalleryModal = ({ images = [], startIndex = 0, onClose }) => {
   const [index, setIndex] = useState(startIndex);
-  const containerRef = useRef(null);
-  const draggingRef = useRef(false);
-  const startXRef = useRef(0);
-  const lastXRef = useRef(0);
-  const pointerCaptureRef = useRef(null);
 
   useEffect(() => { setIndex(startIndex); }, [startIndex]);
 
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'ArrowRight') setIndex(i => (i + 1) % images.length);
-      if (e.key === 'ArrowLeft') setIndex(i => (i - 1 + images.length) % images.length);
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [images.length, onClose]);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    let pointerId = null;
-
-    const down = (e) => {
-      if (e.target.closest && e.target.closest('button')) return;
-      pointerId = e.pointerId;
-      draggingRef.current = false;
-      startXRef.current = e.clientX;
-      lastXRef.current = e.clientX;
-      try { el.setPointerCapture(pointerId); pointerCaptureRef.current = pointerId; } catch(err){ pointerCaptureRef.current = null; }
-    };
-
-    const move = (e) => {
-      if (pointerId === null || e.pointerId !== pointerId) return;
-      const dx = e.clientX - startXRef.current;
-      if (Math.abs(dx) > 10) draggingRef.current = true;
-      lastXRef.current = e.clientX;
-    };
-
-    const up = (e) => {
-      if (pointerId === null || e.pointerId !== pointerId) return;
-      const totalDx = e.clientX - startXRef.current;
-      if (!draggingRef.current && Math.abs(totalDx) < 8) {
-        // tap -> keep modal open
-      } else {
-        if (totalDx < -30) setIndex(i => (i + 1) % images.length);
-        if (totalDx > 30) setIndex(i => (i - 1 + images.length) % images.length);
-      }
-      try { if (pointerCaptureRef.current) el.releasePointerCapture(pointerCaptureRef.current); } catch(err){}
-      pointerCaptureRef.current = null;
-      pointerId = null;
-      draggingRef.current = false;
-    };
-
-    el.addEventListener('pointerdown', down, { passive: true });
-    el.addEventListener('pointermove', move, { passive: true });
-    el.addEventListener('pointerup', up, { passive: true });
-    el.addEventListener('pointercancel', up, { passive: true });
-
-    return () => {
-      el.removeEventListener('pointerdown', down);
-      el.removeEventListener('pointermove', move);
-      el.removeEventListener('pointerup', up);
-      el.removeEventListener('pointercancel', up);
-    };
-  }, [images.length]);
-
   if (!images.length) return null;
-
-  const isMiddle = middleSet.has(images[index]);
-  const imgStyle = isMiddle ? { maxWidth: '80vw', maxHeight: '80vh' } : { maxWidth: '100vw', maxHeight: '100vh' };
 
   return (
     <motion.div className="fixed inset-0 bg-black/90 flex justify-center items-center z-[100] p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <motion.div className="relative w-full flex items-center justify-center" initial={{ scale: 0.95 }} animate={{ scale: 1 }} onClick={(e) => e.stopPropagation()} ref={containerRef}>
-
+      <motion.div className="relative w-full flex items-center justify-center max-w-5xl" initial={{ scale: 0.95 }} animate={{ scale: 1 }} onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); onClose(); }}
+          onClick={onClose}
           aria-label="Close"
           className="absolute top-3 right-3 z-50 bg-black/60 hover:bg-black/70 p-2 rounded-md text-white"
-          style={{ pointerEvents: 'auto' }}
         >
           <X />
         </button>
 
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); setIndex(i => (i - 1 + images.length) % images.length); }}
-          aria-label="Previous"
-          className="hidden md:flex absolute left-3 z-50 items-center justify-center h-10 w-10 rounded-full bg-black/40 hover:bg-black/60 text-white"
-          style={{ pointerEvents: 'auto' }}
-        >
-          <ChevronLeft />
-        </button>
-
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); setIndex(i => (i + 1) % images.length); }}
-          aria-label="Next"
-          className="hidden md:flex absolute right-3 z-50 items-center justify-center h-10 w-10 rounded-full bg-black/40 hover:bg-black/60 text-white"
-          style={{ pointerEvents: 'auto' }}
-        >
-          <ChevronRight />
-        </button>
-
         <div className="max-w-full max-h-[90vh] flex items-center justify-center rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800 p-4">
           <WatermarkWrapper>
-            <img src={images[index]} alt={`zoom-${index}`} className="object-contain" draggable={false} style={{ ...protectionStyles, ...imgStyle }} />
+            <img src={images[index]} alt={`zoom-${index}`} className="object-contain max-h-[80vh]" draggable={false} style={protectionStyles} />
           </WatermarkWrapper>
-        </div>
-
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-50 flex gap-2">
-          {images.map((_, i) => (
-            <button key={i} onClick={(e) => { e.stopPropagation(); setIndex(i); }} className={`h-2 w-8 rounded-full ${i === index ? 'bg-white' : 'bg-white/30'}`} type="button" />
-          ))}
         </div>
       </motion.div>
     </motion.div>
@@ -354,11 +336,6 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
     return () => cancelAnimationFrame(rafId);
   }, [speed, isPaused]);
 
-  const openGalleryForCerts = (src) => {
-    const idx = images.indexOf(src);
-    setZoomSrc({ start: idx });
-  };
-
   return (
     <div className="w-full py-12">
       <div className="max-w-5xl mx-auto overflow-hidden">
@@ -374,7 +351,7 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
               key={i} 
               className="flex-shrink-0 w-48 h-32 md:w-64 md:h-40 bg-neutral-800 rounded-xl overflow-hidden cursor-pointer border border-neutral-700"
               whileHover={{ scale: 1.05 }}
-              onClick={() => openGalleryForCerts(src)}
+              onClick={() => setZoomSrc(src)}
             >
               <img 
                 src={src} 
@@ -389,238 +366,85 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
       </div>
       <AnimatePresence>
         {zoomSrc && (
-          <GalleryModal images={images} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} middleSet={new Set()} certMode={true} />
+          <GalleryModal images={images} startIndex={images.indexOf(zoomSrc)} onClose={() => setZoomSrc(null)} />
         )}
       </AnimatePresence>
     </div>
   );
 };
 
-// --- RESULTS LOGIC ---
-function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPaused = false }) {
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    let lastTime = 0;
-    let rafId;
-    const step = (ts) => {
-      if (!lastTime) lastTime = ts;
-      const dt = (ts - lastTime) / 1000;
-      lastTime = ts;
-      if (!isPaused) {
-        const move = speed * dt;
-        if (reverse) {
-          el.scrollLeft -= move;
-          if (el.scrollLeft <= 0) el.scrollLeft = el.scrollWidth / 2;
-        } else {
-          el.scrollLeft += move;
-          if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft = 0;
-        }
-      }
-      rafId = requestAnimationFrame(step);
-    };
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, [speed, reverse, isPaused]);
-}
-
-const BannerStrip = ({ images, reverse, onImageClick }) => {
-  const containerRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const resumeTimerRef = useRef(null);
-  const holdResumeRef = useRef(null);
-
-  const duplicated = [...images, ...images];
-  useAutoScrollResults(containerRef, { speed: 100, reverse, isPaused });
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    let pointerId = null;
-    let startX = 0;
-    let startY = 0;
-    let lastX = 0;
-    let directionDetermined = false;
-    let isHorizontal = false;
-    let isDragging = false;
-    let hasCapture = false;
-
-    const clearResumeTimer = () => {
-      if (resumeTimerRef.current) { clearTimeout(resumeTimerRef.current); resumeTimerRef.current = null; }
-      if (holdResumeRef.current) { clearTimeout(holdResumeRef.current); holdResumeRef.current = null; }
-    };
-
-    const startResumeTimer = (ms = 3000) => {
-      clearResumeTimer();
-      resumeTimerRef.current = setTimeout(() => {
-        setIsPaused(false);
-        resumeTimerRef.current = null;
-      }, ms);
-    };
-
-    const onPointerDown = (e) => {
-      if (e.target.closest && e.target.closest('button')) return;
-      if (pointerId !== null) return;
-      pointerId = e.pointerId;
-      startX = e.clientX;
-      startY = e.clientY;
-      lastX = startX;
-      directionDetermined = false;
-      isHorizontal = false;
-      isDragging = true;
-      setIsPaused(true);
-      clearResumeTimer();
-      holdResumeRef.current = setTimeout(() => { setIsPaused(false); holdResumeRef.current = null; }, 3000);
-      try { el.setPointerCapture(pointerId); hasCapture = true; } catch(err) { hasCapture = false; }
-    };
-
-    const onPointerMove = (e) => {
-      if (!isDragging || e.pointerId !== pointerId) return;
-      const dxTotal = e.clientX - startX;
-      const dyTotal = e.clientY - startY;
-      const dx = e.clientX - lastX;
-
-      if (!directionDetermined) {
-        if (Math.abs(dxTotal) > 6 || Math.abs(dyTotal) > 6) {
-          directionDetermined = true;
-          isHorizontal = Math.abs(dxTotal) > Math.abs(dyTotal);
-        } else {
-          return;
-        }
-      }
-
-      if (isHorizontal) {
-        e.preventDefault();
-        el.scrollLeft -= dx;
-        lastX = e.clientX;
-      } else {
-        if (hasCapture) { try { el.releasePointerCapture(pointerId); } catch(err){} hasCapture = false; }
-        isDragging = false;
-        pointerId = null;
-      }
-    };
-
-    const onPointerUp = (e) => {
-      if (pointerId !== e.pointerId && pointerId !== null) return;
-      const totalDx = e.clientX - startX;
-      const totalDy = e.clientY - startY;
-      const isTap = Math.abs(totalDx) < 10 && Math.abs(totalDy) < 10;
-
-      if (isTap) {
-        const elAt = document.elementFromPoint(e.clientX, e.clientY);
-        const card = elAt ? elAt.closest('[data-result-src]') : null;
-        if (card) {
-          const src = card.getAttribute('data-result-src');
-          if (src) {
-            setIsPaused(true);
-            clearResumeTimer();
-            onImageClick(src);
-          }
-        }
-      }
-
-      startResumeTimer(3000);
-
-      if (pointerId !== null && hasCapture) { try { el.releasePointerCapture(pointerId); } catch(err){} hasCapture = false; }
-      pointerId = null;
-      isDragging = false;
-      directionDetermined = false;
-      isHorizontal = false;
-    };
-
-    const onMouseEnter = () => { setIsPaused(true); clearResumeTimer(); };
-    const onMouseLeave = () => { startResumeTimer(3000); };
-
-    el.addEventListener('pointerdown', onPointerDown, { passive: true });
-    el.addEventListener('pointermove', onPointerMove, { passive: false });
-    el.addEventListener('pointerup', onPointerUp, { passive: true });
-    el.addEventListener('pointercancel', onPointerUp, { passive: true });
-    el.addEventListener('lostpointercapture', onPointerUp, { passive: true });
-    el.addEventListener('mouseenter', onMouseEnter);
-    el.addEventListener('mouseleave', onMouseLeave);
-
-    return () => {
-      clearResumeTimer();
-      el.removeEventListener('pointerdown', onPointerDown);
-      el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerup', onPointerUp);
-      el.removeEventListener('pointercancel', onPointerUp);
-      el.removeEventListener('lostpointercapture', onPointerUp);
-      el.removeEventListener('mouseenter', onMouseEnter);
-      el.removeEventListener('mouseleave', onMouseLeave);
-    };
-
-  }, [onImageClick]);
-
-  const handleImageClick = (src) => {
-    setIsPaused(true);
-    if (resumeTimerRef.current) { clearTimeout(resumeTimerRef.current); resumeTimerRef.current = null; }
-    onImageClick(src);
-  };
-
-  return (
-    <div 
-      ref={containerRef}
-      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none"
-      style={{ scrollbarWidth: 'none', touchAction: 'pan-y', WebkitOverflowScrolling: 'touch' }}
-    >
-      <div className="flex">
-        {duplicated.map((src, i) => (
-          <div key={i} className="w-screen md:w-[60vw] lg:w-[40vw] flex-shrink-0 px-2 md:px-4 py-4">
-            <motion.div 
-              data-result-src={src}
-              className="w-full h-[250px] md:h-[400px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              onClick={() => handleImageClick(src)}
-            >
-              <WatermarkWrapper>
-                <img 
-                  src={src} 
-                  alt="Result" 
-                  className="w-full h-full object-cover md:object-contain" 
-                  draggable={false} 
-                  style={protectionStyles}
-                />
-              </WatermarkWrapper>
-            </motion.div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const MultiStripBanners = () => {
+// --- TABBED CASES COMPONENT (Interactive Case Switcher) ---
+const InteractiveCasesView = () => {
+  const [activeCaseId, setActiveCaseId] = useState(1);
   const [zoomSrc, setZoomSrc] = useState(null);
-  const [galleryImages, setGalleryImages] = useState([]);
-  const row1 = ["https://i.postimg.cc/C5GsYm88/11.png", "https://i.postimg.cc/wMXQH0N1/8.png", "https://i.postimg.cc/qqsx0jK6/10.png"];
-  const row2 = ["https://i.postimg.cc/L5t3RNPm/1.png", "https://i.postimg.cc/D0rPFBGm/5.png", "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png", "https://i.postimg.cc/cCRBZX34/2.png", "https://i.postimg.cc/7h3nDmzH/4.png"];
-  const row3 = ["https://i.postimg.cc/Zn8xZVNp/12.png", "https://i.postimg.cc/Xqfk3Q5G/9.png"];
 
-  const combined = [...row1, ...row2, ...row3];
-  const middleSet = new Set(row2);
-
-  const onOpenFromStrip = (src) => {
-    const idx = combined.indexOf(src);
-    if (idx !== -1) {
-      setGalleryImages(combined);
-      setZoomSrc({ start: idx });
-    } else {
-      setGalleryImages([src]);
-      setZoomSrc({ start: 0 });
-    }
-  };
+  const activeCase = caseStudiesData.find(c => c.id === activeCaseId) || caseStudiesData[0];
 
   return (
-    <div className="space-y-4 md:space-y-8">
-      <BannerStrip images={row1} reverse={false} onImageClick={onOpenFromStrip} />
-      <BannerStrip images={row2} reverse={true} onImageClick={onOpenFromStrip} />
-      <BannerStrip images={row3} reverse={false} onImageClick={onOpenFromStrip} />
+    <div className="w-full max-w-4xl mx-auto">
+      {/* Case Selector Buttons */}
+      <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 no-scrollbar">
+        {caseStudiesData.map((caseItem) => {
+          const isActive = caseItem.id === activeCaseId;
+          return (
+            <button
+              key={caseItem.id}
+              onClick={() => setActiveCaseId(caseItem.id)}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 flex-shrink-0 border ${
+                isActive
+                  ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.4)]'
+                  : 'bg-neutral-900/80 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700'
+              }`}
+            >
+              {caseItem.title}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Selected Case Container */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeCase.id}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ duration: 0.25 }}
+          className="mt-6 flex flex-col items-center"
+        >
+          {/* Metrics Badges Container directly ABOVE the image */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+            {activeCase.metrics.map((metric, idx) => (
+              <MetricBadge key={idx} label={metric.label} value={metric.value} />
+            ))}
+          </div>
+
+          {/* Case Image Card */}
+          <motion.div
+            className="w-full max-w-2xl h-[320px] md:h-[450px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
+            whileHover={{ scale: 1.01 }}
+            onClick={() => setZoomSrc(activeCase.image)}
+          >
+            <WatermarkWrapper>
+              <img
+                src={activeCase.image}
+                alt={activeCase.title}
+                className="w-full h-full object-contain"
+                draggable={false}
+                style={protectionStyles}
+              />
+            </WatermarkWrapper>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
       <AnimatePresence>
         {zoomSrc && (
-          <GalleryModal images={galleryImages} startIndex={zoomSrc.start} onClose={() => { setZoomSrc(null); setGalleryImages([]); }} middleSet={middleSet} />
+          <GalleryModal
+            images={caseStudiesData.map(c => c.image)}
+            startIndex={caseStudiesData.findIndex(c => c.image === zoomSrc)}
+            onClose={() => setZoomSrc(null)}
+          />
         )}
       </AnimatePresence>
     </div>
@@ -731,9 +555,9 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section */}
+        {/* Results Section with Dynamic Cases Tabs */}
         <SectionWrapper ref={sectionRefs.projects} id="projects" title="Results">
-          <MultiStripBanners />
+          <InteractiveCasesView />
         </SectionWrapper>
 
         {/* Yellow Cards Container */}
@@ -774,6 +598,8 @@ export default function Portfolio() {
         <div className="flex justify-center gap-6 mb-4">
           <a
             href={personalInfo.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:text-teal-400 hover:bg-neutral-800 transition-all"
           >
             <Linkedin size={20} />
@@ -781,6 +607,8 @@ export default function Portfolio() {
 
           <a
             href={personalInfo.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:text-green-500 hover:bg-neutral-800 transition-all"
           >
             <Phone size={20} />
@@ -788,6 +616,8 @@ export default function Portfolio() {
 
           <a
             href={personalInfo.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:text-pink-500 hover:bg-neutral-800 transition-all"
           >
             <SiTiktok size={18} />
@@ -807,7 +637,7 @@ export default function Portfolio() {
 function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const toggle = () => setVisible(window.pageYOffset > 300);
+    const toggle = () => setVisible(window.scrollY > 300);
     window.addEventListener('scroll', toggle);
     return () => window.removeEventListener('scroll', toggle);
   }, []);
