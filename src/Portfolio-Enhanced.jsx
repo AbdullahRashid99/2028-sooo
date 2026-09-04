@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import {
   Menu, X, Linkedin, Phone, LineChart,
-  GraduationCap, Code, BarChart2,
-  ArrowUp, ChevronLeft, ChevronRight
+  GraduationCap, Code, ArrowUp, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 import { SiTiktok } from 'react-icons/si';
@@ -68,17 +67,6 @@ const Button = ({ children, className, ...props }) => (
   </button>
 );
 
-const MetricBadge = ({ label, value }) => (
-  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#031d1d]/90 border border-[#0d5c56] text-teal-400 backdrop-blur-md shadow-lg text-xs md:text-sm font-semibold">
-    <div className="w-4 h-4 rounded-full border border-teal-400 flex items-center justify-center text-teal-300 text-[10px] font-bold">
-      ✓
-    </div>
-    <span>
-      {label}: <strong className="text-white font-bold ml-1">{value}</strong>
-    </span>
-  </div>
-);
-
 // --- Personal Info ---
 const personalInfo = {
   name: "Abdullah Rashid",
@@ -92,7 +80,6 @@ const personalInfo = {
 const sections = [
   { id: "skills", title: "Skills" },
   { id: "results", title: "Results" },
-  { id: "before-after", title: "Before & After Us" },
 ];
 
 const skillsData = [
@@ -108,62 +95,6 @@ const skillsData = [
   "Data-Driven Decision Making",
   "Shopify Developer",
   "Websites CRO"
-];
-
-// --- Cases Data (Before & After Us Section) ---
-const caseStudiesData = [
-  {
-    id: 1,
-    title: "Case 1",
-    niche: "Fashion & Apparel",
-    note: "Scaled from scratch to high profitable margins in 3 months.",
-    imageBefore: "https://i.postimg.cc/C5GsYm88/11.png", 
-    imageAfter: "https://i.postimg.cc/C5GsYm88/11.png",  
-    metrics: [
-      { label: "Conversion Rate", value: "4.1%" },
-      { label: "CPA Reduction", value: "-42%" },
-      { label: "ROAS", value: "4.8x" }
-    ]
-  },
-  {
-    id: 2,
-    title: "Case 2",
-    niche: "Beauty & Cosmetics",
-    note: "Optimized ad creatives and landing page to boost AOV.",
-    imageBefore: "https://i.postimg.cc/wMXQH0N1/8.png",
-    imageAfter: "https://i.postimg.cc/wMXQH0N1/8.png",
-    metrics: [
-      { label: "CPM", value: "$4.20" },
-      { label: "Total Sales", value: "$125,000" },
-      { label: "ROAS", value: "5.2x" }
-    ]
-  },
-  {
-    id: 3,
-    title: "Case 3",
-    niche: "Electronics",
-    note: "Targeted retargeting campaigns resulted in huge drop in CPP.",
-    imageBefore: "https://i.postimg.cc/qqsx0jK6/10.png",
-    imageAfter: "https://i.postimg.cc/qqsx0jK6/10.png",
-    metrics: [
-      { label: "CPP", value: "$12.5" },
-      { label: "AOV", value: "$85" },
-      { label: "Conversion Rate", value: "3.9%" }
-    ]
-  },
-  {
-    id: 4,
-    title: "Case 4",
-    niche: "Home & Garden",
-    note: "Restructured the entire Google Ads and Shopify store.",
-    imageBefore: "https://i.postimg.cc/L5t3RNPm/1.png",
-    imageAfter: "https://i.postimg.cc/L5t3RNPm/1.png",
-    metrics: [
-      { label: "ROAS", value: "6.1x" },
-      { label: "CPA Reduction", value: "-38%" },
-      { label: "Total Sales", value: "$240,000" }
-    ]
-  }
 ];
 
 // --- Section Wrapper ---
@@ -349,35 +280,48 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
 };
 
 // --- RESULTS DATA FOR BOTH ROWS ---
-const reelsCasesData = [
-  { 
-    src: "https://i.postimg.cc/L5t3RNPm/1.png", 
-    description: "Case 1: Scaled ROAS to 6.1x with $240K Sales" 
-  },
-  { 
-    src: "https://i.postimg.cc/D0rPFBGm/5.png", 
-    description: "Case 2: Consistent 300% Growth in E-commerce Revenue" 
-  },
-  { 
-    src: "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png", 
-    description: "Case 3: Achieved $450K+ Monthly Revenue" 
-  },
-  { 
-    src: "https://i.postimg.cc/cCRBZX34/2.png", 
-    description: "Case 4: Dropped CPA by 40% globally in 3 weeks" 
-  },
-  { 
-    src: "https://i.postimg.cc/7h3nDmzH/4.png", 
-    description: "Case 5: Dominated the niche market efficiently" 
-  }
+const reelsCasesImages = [
+  "https://i.postimg.cc/L5t3RNPm/1.png", 
+  "https://i.postimg.cc/D0rPFBGm/5.png", 
+  "https://i.postimg.cc/mkfy00Pg/Untitled-design-(1).png", 
+  "https://i.postimg.cc/cCRBZX34/2.png", 
+  "https://i.postimg.cc/7h3nDmzH/4.png"
 ];
 
-const landscapeBannerImages = [
-  "https://i.postimg.cc/C5GsYm88/11.png",
-  "https://i.postimg.cc/wMXQH0N1/8.png",
-  "https://i.postimg.cc/qqsx0jK6/10.png",
-  "https://i.postimg.cc/Zn8xZVNp/12.png",
-  "https://i.postimg.cc/Xqfk3Q5G/9.png"
+// --- LANDSCAPE BANNER ITEMS WITH CUSTOM TITLES ---
+const landscapeBannerItems = [
+  {
+    src: "https://i.postimg.cc/C5GsYm88/11.png",
+    title: "Scaled ROAS to 6.1x with $240K Sales"
+  },
+  {
+    src: "https://i.postimg.cc/wMXQH0N1/8.png",
+    title: "Consistent 300% Growth in E-commerce Revenue"
+  },
+  {
+    src: "https://i.postimg.cc/qqsx0jK6/10.png",
+    title: "Dropped CPA by 40% Globally in 3 Weeks"
+  },
+  {
+    src: "https://i.postimg.cc/Zn8xZVNp/12.png",
+    title: "Generated $180K+ Revenue with High CRO Strategy"
+  },
+  {
+    src: "https://i.postimg.cc/Xqfk3Q5G/9.png",
+    title: "Dominated the Niche Market Efficiently"
+  },
+  {
+    src: "https://i.postimg.cc/Gp9FRGX5/1.png",
+    title: "High-Converting Shopify Store Scaling & Paid Ads"
+  },
+  {
+    src: "https://i.postimg.cc/N0L6tmdZ/2.png",
+    title: "Optimized Ad Spend & Increased Net Profitability"
+  },
+  {
+    src: "https://i.postimg.cc/1z4GSwvL/3.png",
+    title: "Sustained Growth & High Return on Ad Spend"
+  }
 ];
 
 // --- AUTO SCROLL HOOK ---
@@ -409,10 +353,10 @@ function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPau
 }
 
 // --- ROW 1: REELS STYLE BANNER STRIP ---
-const ReelsBannerStrip = ({ items, reverse = false, onImageClick }) => {
+const ReelsBannerStrip = ({ images, reverse = false, onImageClick }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
-  const duplicated = [...items, ...items];
+  const duplicated = [...images, ...images];
   useAutoScrollResults(containerRef, { speed: 80, reverse, isPaused });
 
   return (
@@ -423,24 +367,19 @@ const ReelsBannerStrip = ({ items, reverse = false, onImageClick }) => {
       onMouseLeave={() => setIsPaused(false)}
       style={{ scrollbarWidth: 'none' }}
     >
-      <div className="flex items-end">
-        {duplicated.map((item, i) => (
+      <div className="flex items-center">
+        {duplicated.map((src, i) => (
           <div key={i} className="w-[75vw] sm:w-[45vw] md:w-[30vw] lg:w-[22vw] flex-shrink-0 px-3 md:px-4 flex flex-col items-center">
-            
-            <p className="text-teal-400 text-sm md:text-base font-semibold mb-3 text-center px-2">
-              {item.description}
-            </p>
-
             <motion.div 
-              className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-neutral-800 bg-black cursor-pointer shadow-2xl relative"
+              className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
               whileHover={{ scale: 1.02 }}
-              onClick={() => onImageClick(item.src)}
+              onClick={() => onImageClick(src)}
             >
               <WatermarkWrapper>
                 <img 
-                  src={item.src} 
+                  src={src} 
                   alt="Result Case" 
-                  className="w-full h-full object-contain" 
+                  className="w-full h-full object-cover object-top" 
                   draggable={false} 
                   style={protectionStyles} 
                 />
@@ -453,14 +392,14 @@ const ReelsBannerStrip = ({ items, reverse = false, onImageClick }) => {
   );
 };
 
-// --- ROW 2: WIDE LANDSCAPE BANNER STRIP ---
-const LandscapeBannerStrip = ({ images, reverse = true, onImageClick }) => {
+// --- ROW 2: WIDE LANDSCAPE BANNER STRIP WITH HEADINGS ABOVE EACH BANNER ---
+const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const resumeTimerRef = useRef(null);
   const holdResumeRef = useRef(null);
 
-  const duplicated = [...images, ...images];
+  const duplicated = [...items, ...items];
   useAutoScrollResults(containerRef, { speed: 90, reverse, isPaused });
 
   useEffect(() => {
@@ -596,20 +535,25 @@ const LandscapeBannerStrip = ({ images, reverse = true, onImageClick }) => {
       style={{ scrollbarWidth: 'none', touchAction: 'pan-y', WebkitOverflowScrolling: 'touch' }}
     >
       <div className="flex">
-        {duplicated.map((src, i) => (
-          <div key={i} className="w-screen md:w-[60vw] lg:w-[40vw] flex-shrink-0 px-2 md:px-4">
+        {duplicated.map((item, i) => (
+          <div key={i} className="w-screen md:w-[60vw] lg:w-[40vw] flex-shrink-0 px-2 md:px-4 flex flex-col items-center">
+            {item.title && (
+              <h4 className="text-teal-400 font-bold text-sm md:text-base mb-2 text-center tracking-wide px-2">
+                {item.title}
+              </h4>
+            )}
             <motion.div 
-              data-result-src={src}
+              data-result-src={item.src}
               className="w-full h-[220px] md:h-[350px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300 }}
-              onClick={() => handleImageClick(src)}
+              onClick={() => handleImageClick(item.src)}
             >
               <WatermarkWrapper>
                 <img 
-                  src={src} 
-                  alt="Result Landscape" 
-                  className="w-full h-full object-cover md:object-contain" 
+                  src={item.src} 
+                  alt={item.title || "Result Landscape"} 
+                  className="w-full h-full object-cover object-top" 
                   draggable={false} 
                   style={protectionStyles}
                 />
@@ -626,9 +570,8 @@ const LandscapeBannerStrip = ({ images, reverse = true, onImageClick }) => {
 const MultiStripBanners = () => {
   const [zoomSrc, setZoomSrc] = useState(null);
 
-  // Combine images from both rows for seamless gallery viewing
-  const reelsImages = reelsCasesData.map(item => item.src);
-  const allImages = [...reelsImages, ...landscapeBannerImages];
+  const landscapeUrls = landscapeBannerItems.map(item => item.src);
+  const allImages = [...reelsCasesImages, ...landscapeUrls];
 
   const onOpenFromStrip = (src) => {
     const idx = allImages.indexOf(src);
@@ -639,18 +582,12 @@ const MultiStripBanners = () => {
     <div className="space-y-6 md:space-y-12">
       {/* ROW 1: Reels Style Format */}
       <div>
-        <h4 className="text-sm md:text-base font-semibold text-neutral-400 uppercase tracking-widest text-center mb-2">
-          Featured Campaigns & Case Highlights
-        </h4>
-        <ReelsBannerStrip items={reelsCasesData} reverse={false} onImageClick={onOpenFromStrip} />
+        <ReelsBannerStrip images={reelsCasesImages} reverse={false} onImageClick={onOpenFromStrip} />
       </div>
 
-      {/* ROW 2: Wide Landscape Format */}
+      {/* ROW 2: Wide Landscape Format with Titles directly above banners */}
       <div>
-        <h4 className="text-sm md:text-base font-semibold text-neutral-400 uppercase tracking-widest text-center mb-2">
-          Analytics & Proof Screenshots
-        </h4>
-        <LandscapeBannerStrip images={landscapeBannerImages} reverse={true} onImageClick={onOpenFromStrip} />
+        <LandscapeBannerStrip items={landscapeBannerItems} reverse={true} onImageClick={onOpenFromStrip} />
       </div>
 
       {/* Shared Lightbox / Gallery Modal */}
@@ -667,157 +604,13 @@ const MultiStripBanners = () => {
   );
 };
 
-// --- BEFORE / AFTER SLIDER COMPONENT ---
-const BeforeAfterSlider = ({ beforeImage, afterImage }) => {
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const containerRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleMove = (clientX) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = (x / rect.width) * 100;
-    setSliderPosition(percent);
-  };
-
-  const onPointerDown = (e) => {
-    setIsDragging(true);
-    handleMove(e.clientX || (e.touches && e.touches[0].clientX));
-  };
-
-  const onPointerMove = (e) => {
-    if (!isDragging) return;
-    handleMove(e.clientX || (e.touches && e.touches[0].clientX));
-  };
-
-  const onPointerUp = () => setIsDragging(false);
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative w-full max-w-3xl h-[400px] md:h-[500px] rounded-2xl overflow-hidden cursor-ew-resize select-none border border-neutral-800 bg-neutral-900 shadow-xl touch-none"
-      onMouseDown={onPointerDown}
-      onMouseMove={onPointerMove}
-      onMouseUp={onPointerUp}
-      onMouseLeave={onPointerUp}
-      onTouchStart={onPointerDown}
-      onTouchMove={onPointerMove}
-      onTouchEnd={onPointerUp}
-    >
-      <WatermarkWrapper>
-        {/* Base Image (After) */}
-        <img
-          src={afterImage}
-          alt="After"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          draggable={false}
-          style={protectionStyles}
-        />
-
-        {/* Overlay Image (Before) */}
-        <img
-          src={beforeImage}
-          alt="Before"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ ...protectionStyles, clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
-          draggable={false}
-        />
-
-        {/* Slider Line & Button */}
-        <div
-          className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize pointer-events-none z-10"
-          style={{ left: `calc(${sliderPosition}% - 2px)` }}
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)]">
-            <ChevronLeft className="text-black w-4 h-4 -mr-0.5" />
-            <ChevronRight className="text-black w-4 h-4 -ml-0.5" />
-          </div>
-        </div>
-
-        {/* Labels */}
-        <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-medium pointer-events-none z-10">
-          Before
-        </div>
-        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-medium pointer-events-none z-10">
-          After
-        </div>
-      </WatermarkWrapper>
-    </div>
-  );
-};
-
-// --- TABBED CASES COMPONENT (Before & After Us) ---
-const InteractiveCasesView = () => {
-  const [activeCaseId, setActiveCaseId] = useState(1);
-  const activeCase = caseStudiesData.find(c => c.id === activeCaseId) || caseStudiesData[0];
-
-  return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Case Selector Buttons */}
-      <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 no-scrollbar">
-        {caseStudiesData.map((caseItem) => {
-          const isActive = caseItem.id === activeCaseId;
-          return (
-            <button
-              key={caseItem.id}
-              onClick={() => setActiveCaseId(caseItem.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 flex-shrink-0 border ${
-                isActive 
-                  ? 'bg-teal-500/20 border-teal-400 text-teal-300' 
-                  : 'bg-neutral-800/50 border-neutral-700 text-neutral-400 hover:bg-neutral-800'
-              }`}
-            >
-              {caseItem.title}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Case Content */}
-      <motion.div 
-        key={activeCase.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mt-6 flex flex-col items-center text-center"
-      >
-        <h3 className="text-2xl font-bold text-white mb-1">{activeCase.title}</h3>
-        
-        <p className="text-teal-400 font-semibold mb-2">
-          Industry / Niche: <span className="text-white">{activeCase.niche}</span>
-        </p>
-        {activeCase.note && (
-          <p className="text-neutral-300 max-w-2xl mx-auto mb-6">
-            Note: {activeCase.note}
-          </p>
-        )}
-
-        {/* Metrics Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-          {activeCase.metrics.map((m, idx) => (
-            <MetricBadge key={idx} label={m.label} value={m.value} />
-          ))}
-        </div>
-
-        {/* Slider Component implementation */}
-        <BeforeAfterSlider 
-          beforeImage={activeCase.imageBefore} 
-          afterImage={activeCase.imageAfter} 
-        />
-      </motion.div>
-    </div>
-  );
-};
-
 // --- Main Portfolio ---
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('home');
   const sectionRefs = { 
     home: useRef(null), 
     skills: useRef(null), 
-    results: useRef(null),
-    'before-after': useRef(null)
+    results: useRef(null)
   };
 
   useEffect(() => {
@@ -896,14 +689,9 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section - NOW WITH 2 ROWS (Reels + Wide Landscape) */}
+        {/* Results Section */}
         <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
           <MultiStripBanners />
-        </SectionWrapper>
-
-        {/* Before & After Us Section */}
-        <SectionWrapper ref={sectionRefs['before-after']} id="before-after" title="Before & After Us">
-          <InteractiveCasesView />
         </SectionWrapper>
 
         {/* Yellow Cards Container */}
