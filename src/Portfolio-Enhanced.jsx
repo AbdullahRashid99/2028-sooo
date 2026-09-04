@@ -292,31 +292,23 @@ const reelsCasesImages = [
 const landscapeBannerItems = [
   {
     src: "https://i.postimg.cc/C5GsYm88/11.png",
-    title: "Scaled ROAS to 6.1x with $240K Sales"
+    title: "Last 7 days Average 🔥"
   },
   {
     src: "https://i.postimg.cc/wMXQH0N1/8.png",
-    title: "Consistent 300% Growth in E-commerce Revenue"
+    title: "Hits harder than I love you"
   },
   {
     src: "https://i.postimg.cc/qqsx0jK6/10.png",
-    title: "Dropped CPA by 40% Globally in 3 Weeks"
-  },
-  {
-    src: "https://i.postimg.cc/Zn8xZVNp/12.png",
-    title: "Generated $180K+ Revenue with High CRO Strategy"
-  },
-  {
-    src: "https://i.postimg.cc/Xqfk3Q5G/9.png",
-    title: "Dominated the Niche Market Efficiently"
+    title: "From 80K ad spend & 260K Purchase to 60K & 525K in no-time"
   },
   {
     src: "https://i.postimg.cc/Gp9FRGX5/1.png",
-    title: "High-Converting Shopify Store Scaling & Paid Ads"
+    title: "$$$ Traget Roas=4"
   },
   {
     src: "https://i.postimg.cc/N0L6tmdZ/2.png",
-    title: "Optimized Ad Spend & Increased Net Profitability"
+    title: "From 0 to hero Startup Brand BEP Roas 2.5"
   },
   {
     src: "https://i.postimg.cc/1z4GSwvL/3.png",
