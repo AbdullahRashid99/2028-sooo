@@ -74,7 +74,7 @@ const personalInfo = {
   linkedin: "https://www.linkedin.com/in/abdullah-rash-id/",
   whatsapp: "http://wa.me/+201025030220",
   tiktok: "https://www.tiktok.com/",
-  profileImage: "/WhatsApp Image 2026-08-30 at 5.39.16 PM.jpeg",
+  profileImage: "https://i.postimg.cc/DwGWP6Y3/lkjhljkh.jpg",
 };
 
 const sections = [
