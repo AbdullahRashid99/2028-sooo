@@ -1,4 +1,3 @@
-// Portfolio-Enhanced.jsx
 import React, { useState, useEffect, useRef } from 'react';
 
 import {
@@ -87,7 +86,7 @@ const personalInfo = {
   linkedin: "https://www.linkedin.com/in/abdullah-rash-id/",
   whatsapp: "http://wa.me/+201025030220",
   tiktok: "https://www.tiktok.com/",
-  profileImage: "https://i.postimg.cc/2574Ss9d/9c10a25ab53cc9bdf0a8fc20082d0868-tplv-tiktokx-cropcenter-1080-1080.jpg",
+  profileImage: "/WhatsApp Image 2026-08-30 at 5.39.16 PM.jpeg",
 };
 
 const sections = [
@@ -349,8 +348,8 @@ const ImageSlider = ({ images = CERT_IMAGES, speed = 60 }) => {
   );
 };
 
-// --- SINGLE REELS STRIP RESULTS LOGIC ---
-const resultsCasesData = [
+// --- RESULTS DATA FOR BOTH ROWS ---
+const reelsCasesData = [
   { 
     src: "https://i.postimg.cc/L5t3RNPm/1.png", 
     description: "Case 1: Scaled ROAS to 6.1x with $240K Sales" 
@@ -373,6 +372,15 @@ const resultsCasesData = [
   }
 ];
 
+const landscapeBannerImages = [
+  "https://i.postimg.cc/C5GsYm88/11.png",
+  "https://i.postimg.cc/wMXQH0N1/8.png",
+  "https://i.postimg.cc/qqsx0jK6/10.png",
+  "https://i.postimg.cc/Zn8xZVNp/12.png",
+  "https://i.postimg.cc/Xqfk3Q5G/9.png"
+];
+
+// --- AUTO SCROLL HOOK ---
 function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPaused = false }) {
   useEffect(() => {
     const el = containerRef.current;
@@ -400,7 +408,8 @@ function useAutoScrollResults(containerRef, { speed = 80, reverse = false, isPau
   }, [speed, reverse, isPaused]);
 }
 
-const ReelsBannerStrip = ({ items, reverse, onImageClick }) => {
+// --- ROW 1: REELS STYLE BANNER STRIP ---
+const ReelsBannerStrip = ({ items, reverse = false, onImageClick }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const duplicated = [...items, ...items];
@@ -409,7 +418,7 @@ const ReelsBannerStrip = ({ items, reverse, onImageClick }) => {
   return (
     <div 
       ref={containerRef}
-      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none py-6"
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none py-4"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       style={{ scrollbarWidth: 'none' }}
@@ -444,21 +453,215 @@ const ReelsBannerStrip = ({ items, reverse, onImageClick }) => {
   );
 };
 
+// --- ROW 2: WIDE LANDSCAPE BANNER STRIP ---
+const LandscapeBannerStrip = ({ images, reverse = true, onImageClick }) => {
+  const containerRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const resumeTimerRef = useRef(null);
+  const holdResumeRef = useRef(null);
+
+  const duplicated = [...images, ...images];
+  useAutoScrollResults(containerRef, { speed: 90, reverse, isPaused });
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let pointerId = null;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let directionDetermined = false;
+    let isHorizontal = false;
+    let isDragging = false;
+    let hasCapture = false;
+
+    const clearResumeTimer = () => {
+      if (resumeTimerRef.current) { clearTimeout(resumeTimerRef.current); resumeTimerRef.current = null; }
+      if (holdResumeRef.current) { clearTimeout(holdResumeRef.current); holdResumeRef.current = null; }
+    };
+
+    const startResumeTimer = (ms = 3000) => {
+      clearResumeTimer();
+      resumeTimerRef.current = setTimeout(() => {
+        setIsPaused(false);
+        resumeTimerRef.current = null;
+      }, ms);
+    };
+
+    const onPointerDown = (e) => {
+      if (e.target.closest && e.target.closest('button')) return;
+      if (pointerId !== null) return;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      lastX = startX;
+      directionDetermined = false;
+      isHorizontal = false;
+      isDragging = true;
+      setIsPaused(true);
+      clearResumeTimer();
+      holdResumeRef.current = setTimeout(() => { setIsPaused(false); holdResumeRef.current = null; }, 3000);
+      try { el.setPointerCapture(pointerId); hasCapture = true; } catch(err) { hasCapture = false; }
+    };
+
+    const onPointerMove = (e) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      const dxTotal = e.clientX - startX;
+      const dyTotal = e.clientY - startY;
+      const dx = e.clientX - lastX;
+
+      if (!directionDetermined) {
+        if (Math.abs(dxTotal) > 6 || Math.abs(dyTotal) > 6) {
+          directionDetermined = true;
+          isHorizontal = Math.abs(dxTotal) > Math.abs(dyTotal);
+        } else {
+          return;
+        }
+      }
+
+      if (isHorizontal) {
+        e.preventDefault();
+        el.scrollLeft -= dx;
+        lastX = e.clientX;
+      } else {
+        if (hasCapture) { try { el.releasePointerCapture(pointerId); } catch(err){} hasCapture = false; }
+        isDragging = false;
+        pointerId = null;
+      }
+    };
+
+    const onPointerUp = (e) => {
+      if (pointerId !== e.pointerId && pointerId !== null) return;
+      const totalDx = e.clientX - startX;
+      const totalDy = e.clientY - startY;
+      const isTap = Math.abs(totalDx) < 10 && Math.abs(totalDy) < 10;
+
+      if (isTap) {
+        const elAt = document.elementFromPoint(e.clientX, e.clientY);
+        const card = elAt ? elAt.closest('[data-result-src]') : null;
+        if (card) {
+          const src = card.getAttribute('data-result-src');
+          if (src) {
+            setIsPaused(true);
+            clearResumeTimer();
+            onImageClick(src);
+          }
+        }
+      }
+
+      startResumeTimer(3000);
+
+      if (pointerId !== null && hasCapture) { try { el.releasePointerCapture(pointerId); } catch(err){} hasCapture = false; }
+      pointerId = null;
+      isDragging = false;
+      directionDetermined = false;
+      isHorizontal = false;
+    };
+
+    const onMouseEnter = () => { setIsPaused(true); clearResumeTimer(); };
+    const onMouseLeave = () => { startResumeTimer(3000); };
+
+    el.addEventListener('pointerdown', onPointerDown, { passive: true });
+    el.addEventListener('pointermove', onPointerMove, { passive: false });
+    el.addEventListener('pointerup', onPointerUp, { passive: true });
+    el.addEventListener('pointercancel', onPointerUp, { passive: true });
+    el.addEventListener('lostpointercapture', onPointerUp, { passive: true });
+    el.addEventListener('mouseenter', onMouseEnter);
+    el.addEventListener('mouseleave', onMouseLeave);
+
+    return () => {
+      clearResumeTimer();
+      el.removeEventListener('pointerdown', onPointerDown);
+      el.removeEventListener('pointermove', onPointerMove);
+      el.removeEventListener('pointerup', onPointerUp);
+      el.removeEventListener('pointercancel', onPointerUp);
+      el.removeEventListener('lostpointercapture', onPointerUp);
+      el.removeEventListener('mouseenter', onMouseEnter);
+      el.removeEventListener('mouseleave', onMouseLeave);
+    };
+
+  }, [onImageClick]);
+
+  const handleImageClick = (src) => {
+    setIsPaused(true);
+    if (resumeTimerRef.current) { clearTimeout(resumeTimerRef.current); resumeTimerRef.current = null; }
+    onImageClick(src);
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none py-4"
+      style={{ scrollbarWidth: 'none', touchAction: 'pan-y', WebkitOverflowScrolling: 'touch' }}
+    >
+      <div className="flex">
+        {duplicated.map((src, i) => (
+          <div key={i} className="w-screen md:w-[60vw] lg:w-[40vw] flex-shrink-0 px-2 md:px-4">
+            <motion.div 
+              data-result-src={src}
+              className="w-full h-[220px] md:h-[350px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              onClick={() => handleImageClick(src)}
+            >
+              <WatermarkWrapper>
+                <img 
+                  src={src} 
+                  alt="Result Landscape" 
+                  className="w-full h-full object-cover md:object-contain" 
+                  draggable={false} 
+                  style={protectionStyles}
+                />
+              </WatermarkWrapper>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// --- MULTI STRIP BANNERS (2 ROWS IN ONE SECTION) ---
 const MultiStripBanners = () => {
   const [zoomSrc, setZoomSrc] = useState(null);
-  const imagesList = resultsCasesData.map(item => item.src);
+
+  // Combine images from both rows for seamless gallery viewing
+  const reelsImages = reelsCasesData.map(item => item.src);
+  const allImages = [...reelsImages, ...landscapeBannerImages];
 
   const onOpenFromStrip = (src) => {
-    const idx = imagesList.indexOf(src);
+    const idx = allImages.indexOf(src);
     setZoomSrc({ start: idx !== -1 ? idx : 0 });
   };
 
   return (
-    <div className="space-y-4 md:space-y-8">
-      <ReelsBannerStrip items={resultsCasesData} reverse={false} onImageClick={onOpenFromStrip} />
-      
+    <div className="space-y-6 md:space-y-12">
+      {/* ROW 1: Reels Style Format */}
+      <div>
+        <h4 className="text-sm md:text-base font-semibold text-neutral-400 uppercase tracking-widest text-center mb-2">
+          Featured Campaigns & Case Highlights
+        </h4>
+        <ReelsBannerStrip items={reelsCasesData} reverse={false} onImageClick={onOpenFromStrip} />
+      </div>
+
+      {/* ROW 2: Wide Landscape Format */}
+      <div>
+        <h4 className="text-sm md:text-base font-semibold text-neutral-400 uppercase tracking-widest text-center mb-2">
+          Analytics & Proof Screenshots
+        </h4>
+        <LandscapeBannerStrip images={landscapeBannerImages} reverse={true} onImageClick={onOpenFromStrip} />
+      </div>
+
+      {/* Shared Lightbox / Gallery Modal */}
       <AnimatePresence>
-        {zoomSrc && <GalleryModal images={imagesList} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />}
+        {zoomSrc && (
+          <GalleryModal 
+            images={allImages} 
+            startIndex={zoomSrc.start} 
+            onClose={() => setZoomSrc(null)} 
+          />
+        )}
       </AnimatePresence>
     </div>
   );
@@ -693,7 +896,7 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section */}
+        {/* Results Section - NOW WITH 2 ROWS (Reels + Wide Landscape) */}
         <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
           <MultiStripBanners />
         </SectionWrapper>
