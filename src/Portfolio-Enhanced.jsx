@@ -100,16 +100,16 @@ const skillsData = [
 
 // --- Brands Logos Data ---
 const brandLogos = [
-  { name: "Trillion Club", url: "https://trillionclubsa.com/", img: null },
-  { name: "Fluency", url: "https://fluency.live/", img: null },
-  { name: "Icona", url: "https://icona.ae/", img: "image_101d69.png" },
-  { name: "Reborn", url: "https://rebornegypt.com/", img: "image_101d8b.png" },
-  { name: "Torinese", url: "https://www.instagram.com/torinese.eg/", img: "image_41fca4.png" },
-  { name: "Roots", url: "https://www.instagram.com/roots_hairrepair/", img: "image_42036f.png" },
-  { name: "Viola", url: "https://www.instagram.com/getviola/", img: "image_4203aa.png" },
-  { name: "Naturel", url: "https://www.instagram.com/___naturel___/", img: "image_4203ca.png" },
-  { name: "The Rx Hair", url: "https://www.instagram.com/therxhair/", img: "image_420085.png" },
-  { name: "Robust", url: "https://www.facebook.com/robustsportswear/", img: "image_420404.png" }
+  { name: "Trillion Club", url: "https://trillionclubsa.com/", img: "https://i.postimg.cc/wTkhV8cW/image-Photoroom-(1).png" },
+  { name: "Fluency", url: "https://i.postimg.cc/BbMRs131/1-removebg-preview-Photoroom.png" },
+  { name: "Icona", url: "https://icona.ae/", img: "https://i.postimg.cc/L5NGRZSD/10-removebg-preview.png" },
+  { name: "Reborn", url: "https://rebornegypt.com/", img: "https://i.postimg.cc/Wz12ckCb/a447c24d-80cc-4d99-99b6-9002c0f64fa3-Picsart-Ai-Image-Enhancer-Photoroom.png" },
+  { name: "Torinese", url: "https://www.instagram.com/torinese.eg/", img: "https://i.postimg.cc/0jchxJvC/8-removebg-preview-Photoroom.png" },
+  { name: "Roots", url: "https://www.instagram.com/roots_hairrepair/", img: "https://i.postimg.cc/MHdgxjwd/image-Photoroom.png" },
+  { name: "Viola", url: "https://www.instagram.com/getviola/", img: "https://i.postimg.cc/XqQt3yWK/5-removebg-preview.png" },
+  { name: "Naturel", url: "https://www.instagram.com/___naturel___/", img: "https://i.postimg.cc/rsQ7ctTr/4-removebg-preview-Photoroom.png" },
+  { name: "The Rx Hair", url: "https://www.instagram.com/therxhair/", img: "https://i.postimg.cc/SNYGmMmK/IMG-4346.png" },
+  { name: "Robust", url: "https://www.facebook.com/robustsportswear/", img: "https://i.postimg.cc/j2ZBKJTf/3-removebg-preview.png" }
 ];
 
 // --- Section Wrapper ---
