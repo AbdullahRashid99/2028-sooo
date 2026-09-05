@@ -77,10 +77,10 @@ const personalInfo = {
   profileImage: "https://i.postimg.cc/DwGWP6Y3/lkjhljkh.jpg",
 };
 
+// Removed "brands" from navigation
 const sections = [
   { id: "skills", title: "Skills" },
   { id: "results", title: "Results" },
-  { id: "brands", title: "Brands" },
 ];
 
 const skillsData = [
@@ -98,10 +98,10 @@ const skillsData = [
   "Websites CRO"
 ];
 
-// --- Brands Logos Data ---
+// --- Brands Logos Data (Updated with direct links) ---
 const brandLogos = [
   { name: "Trillion Club", url: "https://trillionclubsa.com/", img: "https://i.postimg.cc/wTkhV8cW/image-Photoroom-(1).png" },
-  { name: "Fluency", url: "https://i.postimg.cc/BbMRs131/1-removebg-preview-Photoroom.png" },
+  { name: "Fluency", url: "https://fluency.live/", img: "https://postimg.cc/vxx0tTcQ" }, 
   { name: "Icona", url: "https://icona.ae/", img: "https://i.postimg.cc/L5NGRZSD/10-removebg-preview.png" },
   { name: "Reborn", url: "https://rebornegypt.com/", img: "https://i.postimg.cc/Wz12ckCb/a447c24d-80cc-4d99-99b6-9002c0f64fa3-Picsart-Ai-Image-Enhancer-Photoroom.png" },
   { name: "Torinese", url: "https://www.instagram.com/torinese.eg/", img: "https://i.postimg.cc/0jchxJvC/8-removebg-preview-Photoroom.png" },
@@ -303,32 +303,13 @@ const reelsCasesImages = [
   "https://i.postimg.cc/7h3nDmzH/4.png"
 ];
 
-// --- LANDSCAPE BANNER ITEMS WITH CUSTOM TITLES ---
 const landscapeBannerItems = [
-  {
-    src: "https://i.postimg.cc/C5GsYm88/11.png",
-    title: "Last 7 days Average 🔥"
-  },
-  {
-    src: "https://i.postimg.cc/wMXQH0N1/8.png",
-    title: "Hits harder than I love you"
-  },
-  {
-    src: "https://i.postimg.cc/qqsx0jK6/10.png",
-    title: "From 80K ad spend & 260K Purchase to 60K & 525K in no-time"
-  },
-  {
-    src: "https://i.postimg.cc/Gp9FRGX5/1.png",
-    title: "$$$ Traget Roas=4"
-  },
-  {
-    src: "https://i.postimg.cc/N0L6tmdZ/2.png",
-    title: "From 0 to hero Startup Brand BEP Roas 2.5"
-  },
-  {
-    src: "https://i.postimg.cc/1z4GSwvL/3.png",
-    title: "Sustained Growth & High Return on Ad Spend"
-  }
+  { src: "https://i.postimg.cc/C5GsYm88/11.png", title: "Last 7 days Average 🔥" },
+  { src: "https://i.postimg.cc/wMXQH0N1/8.png", title: "Hits harder than I love you" },
+  { src: "https://i.postimg.cc/qqsx0jK6/10.png", title: "From 80K ad spend & 260K Purchase to 60K & 525K in no-time" },
+  { src: "https://i.postimg.cc/Gp9FRGX5/1.png", title: "$$$ Traget Roas=4" },
+  { src: "https://i.postimg.cc/N0L6tmdZ/2.png", title: "From 0 to hero Startup Brand BEP Roas 2.5" },
+  { src: "https://i.postimg.cc/1z4GSwvL/3.png", title: "Sustained Growth & High Return on Ad Spend" }
 ];
 
 // --- AUTO SCROLL HOOK ---
@@ -383,13 +364,7 @@ const ReelsBannerStrip = ({ images, reverse = false, onImageClick }) => {
               onClick={() => onImageClick(src)}
             >
               <WatermarkWrapper>
-                <img 
-                  src={src} 
-                  alt="Result Case" 
-                  className="w-full h-full object-cover object-top" 
-                  draggable={false} 
-                  style={protectionStyles} 
-                />
+                <img src={src} alt="Result Case" className="w-full h-full object-cover object-top" draggable={false} style={protectionStyles} />
               </WatermarkWrapper>
             </motion.div>
           </div>
@@ -399,28 +374,19 @@ const ReelsBannerStrip = ({ images, reverse = false, onImageClick }) => {
   );
 };
 
-// --- ROW 2: WIDE LANDSCAPE BANNER STRIP WITH HEADINGS ABOVE EACH BANNER ---
+// --- ROW 2: WIDE LANDSCAPE BANNER STRIP ---
 const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const resumeTimerRef = useRef(null);
   const holdResumeRef = useRef(null);
-
   const duplicated = [...items, ...items];
   useAutoScrollResults(containerRef, { speed: 90, reverse, isPaused });
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-
-    let pointerId = null;
-    let startX = 0;
-    let startY = 0;
-    let lastX = 0;
-    let directionDetermined = false;
-    let isHorizontal = false;
-    let isDragging = false;
-    let hasCapture = false;
+    let pointerId = null, startX = 0, startY = 0, lastX = 0, directionDetermined = false, isHorizontal = false, isDragging = false, hasCapture = false;
 
     const clearResumeTimer = () => {
       if (resumeTimerRef.current) { clearTimeout(resumeTimerRef.current); resumeTimerRef.current = null; }
@@ -429,80 +395,49 @@ const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
 
     const startResumeTimer = (ms = 3000) => {
       clearResumeTimer();
-      resumeTimerRef.current = setTimeout(() => {
-        setIsPaused(false);
-        resumeTimerRef.current = null;
-      }, ms);
+      resumeTimerRef.current = setTimeout(() => { setIsPaused(false); resumeTimerRef.current = null; }, ms);
     };
 
     const onPointerDown = (e) => {
       if (e.target.closest && e.target.closest('button')) return;
       if (pointerId !== null) return;
       pointerId = e.pointerId;
-      startX = e.clientX;
-      startY = e.clientY;
-      lastX = startX;
-      directionDetermined = false;
-      isHorizontal = false;
-      isDragging = true;
-      setIsPaused(true);
-      clearResumeTimer();
+      startX = e.clientX; startY = e.clientY; lastX = startX; directionDetermined = false; isHorizontal = false; isDragging = true;
+      setIsPaused(true); clearResumeTimer();
       holdResumeRef.current = setTimeout(() => { setIsPaused(false); holdResumeRef.current = null; }, 3000);
       try { el.setPointerCapture(pointerId); hasCapture = true; } catch(err) { hasCapture = false; }
     };
 
     const onPointerMove = (e) => {
       if (!isDragging || e.pointerId !== pointerId) return;
-      const dxTotal = e.clientX - startX;
-      const dyTotal = e.clientY - startY;
-      const dx = e.clientX - lastX;
-
+      const dxTotal = e.clientX - startX, dyTotal = e.clientY - startY, dx = e.clientX - lastX;
       if (!directionDetermined) {
         if (Math.abs(dxTotal) > 6 || Math.abs(dyTotal) > 6) {
-          directionDetermined = true;
-          isHorizontal = Math.abs(dxTotal) > Math.abs(dyTotal);
-        } else {
-          return;
-        }
+          directionDetermined = true; isHorizontal = Math.abs(dxTotal) > Math.abs(dyTotal);
+        } else return;
       }
-
       if (isHorizontal) {
-        e.preventDefault();
-        el.scrollLeft -= dx;
-        lastX = e.clientX;
+        e.preventDefault(); el.scrollLeft -= dx; lastX = e.clientX;
       } else {
         if (hasCapture) { try { el.releasePointerCapture(pointerId); } catch(err){} hasCapture = false; }
-        isDragging = false;
-        pointerId = null;
+        isDragging = false; pointerId = null;
       }
     };
 
     const onPointerUp = (e) => {
       if (pointerId !== e.pointerId && pointerId !== null) return;
-      const totalDx = e.clientX - startX;
-      const totalDy = e.clientY - startY;
-      const isTap = Math.abs(totalDx) < 10 && Math.abs(totalDy) < 10;
-
+      const totalDx = e.clientX - startX, totalDy = e.clientY - startY, isTap = Math.abs(totalDx) < 10 && Math.abs(totalDy) < 10;
       if (isTap) {
         const elAt = document.elementFromPoint(e.clientX, e.clientY);
         const card = elAt ? elAt.closest('[data-result-src]') : null;
         if (card) {
           const src = card.getAttribute('data-result-src');
-          if (src) {
-            setIsPaused(true);
-            clearResumeTimer();
-            onImageClick(src);
-          }
+          if (src) { setIsPaused(true); clearResumeTimer(); onImageClick(src); }
         }
       }
-
       startResumeTimer(3000);
-
       if (pointerId !== null && hasCapture) { try { el.releasePointerCapture(pointerId); } catch(err){} hasCapture = false; }
-      pointerId = null;
-      isDragging = false;
-      directionDetermined = false;
-      isHorizontal = false;
+      pointerId = null; isDragging = false; directionDetermined = false; isHorizontal = false;
     };
 
     const onMouseEnter = () => { setIsPaused(true); clearResumeTimer(); };
@@ -518,15 +453,11 @@ const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
 
     return () => {
       clearResumeTimer();
-      el.removeEventListener('pointerdown', onPointerDown);
-      el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerup', onPointerUp);
-      el.removeEventListener('pointercancel', onPointerUp);
-      el.removeEventListener('lostpointercapture', onPointerUp);
-      el.removeEventListener('mouseenter', onMouseEnter);
+      el.removeEventListener('pointerdown', onPointerDown); el.removeEventListener('pointermove', onPointerMove);
+      el.removeEventListener('pointerup', onPointerUp); el.removeEventListener('pointercancel', onPointerUp);
+      el.removeEventListener('lostpointercapture', onPointerUp); el.removeEventListener('mouseenter', onMouseEnter);
       el.removeEventListener('mouseleave', onMouseLeave);
     };
-
   }, [onImageClick]);
 
   const handleImageClick = (src) => {
@@ -536,34 +467,14 @@ const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
   };
 
   return (
-    <div 
-      ref={containerRef}
-      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none py-4"
-      style={{ scrollbarWidth: 'none', touchAction: 'pan-y', WebkitOverflowScrolling: 'touch' }}
-    >
+    <div ref={containerRef} className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-auto no-scrollbar flex touch-pan-x select-none py-4" style={{ scrollbarWidth: 'none', touchAction: 'pan-y', WebkitOverflowScrolling: 'touch' }}>
       <div className="flex">
         {duplicated.map((item, i) => (
           <div key={i} className="w-screen md:w-[60vw] lg:w-[40vw] flex-shrink-0 px-2 md:px-4 flex flex-col items-center">
-            {item.title && (
-              <h4 className="text-teal-400 font-bold text-sm md:text-base mb-2 text-center tracking-wide px-2">
-                {item.title}
-              </h4>
-            )}
-            <motion.div 
-              data-result-src={item.src}
-              className="w-full h-[220px] md:h-[350px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              onClick={() => handleImageClick(item.src)}
-            >
+            {item.title && <h4 className="text-teal-400 font-bold text-sm md:text-base mb-2 text-center tracking-wide px-2">{item.title}</h4>}
+            <motion.div data-result-src={item.src} className="w-full h-[220px] md:h-[350px] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 cursor-pointer shadow-2xl relative" whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }} onClick={() => handleImageClick(item.src)}>
               <WatermarkWrapper>
-                <img 
-                  src={item.src} 
-                  alt={item.title || "Result Landscape"} 
-                  className="w-full h-full object-cover object-top" 
-                  draggable={false} 
-                  style={protectionStyles}
-                />
+                <img src={item.src} alt={item.title || "Result Landscape"} className="w-full h-full object-cover object-top" draggable={false} style={protectionStyles} />
               </WatermarkWrapper>
             </motion.div>
           </div>
@@ -573,7 +484,7 @@ const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
   );
 };
 
-// --- ROW 3: NEW BRANDS LOGOS STRIP (Clients Section) ---
+// --- LOGOS STRIP (Now part of Results, strict colors/sizing, zero text) ---
 const BrandsBannerStrip = ({ items, speed = 45 }) => {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -597,19 +508,18 @@ const BrandsBannerStrip = ({ items, speed = 45 }) => {
             href={brand.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 w-36 h-20 md:w-52 md:h-28 bg-neutral-900/60 border border-neutral-800 rounded-2xl flex items-center justify-center p-4 hover:border-teal-400/50 hover:bg-neutral-800/90 transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(20,184,166,0.15)] relative overflow-hidden"
+            className="flex-shrink-0 w-40 h-24 md:w-56 md:h-32 bg-neutral-900 border border-neutral-700/60 rounded-2xl flex items-center justify-center p-5 md:p-6 hover:border-teal-400 hover:bg-neutral-800 transition-all duration-300 group shadow-md hover:shadow-[0_0_20px_rgba(20,184,166,0.3)] relative overflow-hidden"
           >
-            {brand.img ? (
+            {brand.img && (
               <img
                 src={brand.img}
                 alt={brand.name}
-                className="max-w-full max-h-full object-contain grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105"
+                // Forced sizing and original colors
+                className="w-full h-full object-contain opacity-85 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 drop-shadow-lg"
                 draggable={false}
+                // Fallback to completely hide broken images with zero text showing
+                onError={(e) => { e.target.style.display = 'none'; }}
               />
-            ) : (
-              <span className="text-sm md:text-lg font-bold text-neutral-500 group-hover:text-teal-400 transition-colors uppercase tracking-widest text-center">
-                {brand.name}
-              </span>
             )}
           </a>
         ))}
@@ -618,10 +528,9 @@ const BrandsBannerStrip = ({ items, speed = 45 }) => {
   );
 };
 
-// --- MULTI STRIP BANNERS (2 ROWS IN ONE SECTION) ---
+// --- MULTI STRIP BANNERS ---
 const MultiStripBanners = () => {
   const [zoomSrc, setZoomSrc] = useState(null);
-
   const landscapeUrls = landscapeBannerItems.map(item => item.src);
   const allImages = [...reelsCasesImages, ...landscapeUrls];
 
@@ -632,24 +541,15 @@ const MultiStripBanners = () => {
 
   return (
     <div className="space-y-6 md:space-y-12">
-      {/* ROW 1: Reels Style Format */}
       <div>
         <ReelsBannerStrip images={reelsCasesImages} reverse={false} onImageClick={onOpenFromStrip} />
       </div>
-
-      {/* ROW 2: Wide Landscape Format with Titles directly above banners */}
       <div>
         <LandscapeBannerStrip items={landscapeBannerItems} reverse={true} onImageClick={onOpenFromStrip} />
       </div>
-
-      {/* Shared Lightbox / Gallery Modal */}
       <AnimatePresence>
         {zoomSrc && (
-          <GalleryModal 
-            images={allImages} 
-            startIndex={zoomSrc.start} 
-            onClose={() => setZoomSrc(null)} 
-          />
+          <GalleryModal images={allImages} startIndex={zoomSrc.start} onClose={() => setZoomSrc(null)} />
         )}
       </AnimatePresence>
     </div>
@@ -662,8 +562,7 @@ export default function Portfolio() {
   const sectionRefs = { 
     home: useRef(null), 
     skills: useRef(null), 
-    results: useRef(null),
-    brands: useRef(null)
+    results: useRef(null) // Only tracking these now
   };
 
   useEffect(() => {
@@ -742,14 +641,14 @@ export default function Portfolio() {
           </div>
         </SectionWrapper>
 
-        {/* Results Section */}
+        {/* Results Section (Now includes Brands at the bottom) */}
         <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
           <MultiStripBanners />
-        </SectionWrapper>
-
-        {/* Brands Section (Clients & Partners) */}
-        <SectionWrapper ref={sectionRefs.brands} id="brands" title="Brands We've Scaled" className="pt-0 md:pt-10">
-          <BrandsBannerStrip items={brandLogos} />
+          
+          {/* Brands Strip silently added here, no titles, no text */}
+          <div className="mt-12 md:mt-20">
+            <BrandsBannerStrip items={brandLogos} />
+          </div>
         </SectionWrapper>
 
         {/* Yellow Cards Container */}
