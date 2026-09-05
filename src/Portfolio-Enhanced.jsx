@@ -80,6 +80,7 @@ const personalInfo = {
 const sections = [
   { id: "skills", title: "Skills" },
   { id: "results", title: "Results" },
+  { id: "brands", title: "Brands" },
 ];
 
 const skillsData = [
@@ -95,6 +96,20 @@ const skillsData = [
   "Data-Driven Decision Making",
   "Shopify Developer",
   "Websites CRO"
+];
+
+// --- Brands Logos Data ---
+const brandLogos = [
+  { name: "Trillion Club", url: "https://trillionclubsa.com/", img: null },
+  { name: "Fluency", url: "https://fluency.live/", img: null },
+  { name: "Icona", url: "https://icona.ae/", img: "image_101d69.png" },
+  { name: "Reborn", url: "https://rebornegypt.com/", img: "image_101d8b.png" },
+  { name: "Torinese", url: "https://www.instagram.com/torinese.eg/", img: "image_41fca4.png" },
+  { name: "Roots", url: "https://www.instagram.com/roots_hairrepair/", img: "image_42036f.png" },
+  { name: "Viola", url: "https://www.instagram.com/getviola/", img: "image_4203aa.png" },
+  { name: "Naturel", url: "https://www.instagram.com/___naturel___/", img: "image_4203ca.png" },
+  { name: "The Rx Hair", url: "https://www.instagram.com/therxhair/", img: "image_420085.png" },
+  { name: "Robust", url: "https://www.facebook.com/robustsportswear/", img: "image_420404.png" }
 ];
 
 // --- Section Wrapper ---
@@ -558,6 +573,51 @@ const LandscapeBannerStrip = ({ items, reverse = true, onImageClick }) => {
   );
 };
 
+// --- ROW 3: NEW BRANDS LOGOS STRIP (Clients Section) ---
+const BrandsBannerStrip = ({ items, speed = 45 }) => {
+  const containerRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  
+  // Duplicating the array multiple times to ensure seamless infinite scrolling
+  const duplicated = [...items, ...items, ...items, ...items, ...items]; 
+
+  useAutoScrollResults(containerRef, { speed, reverse: false, isPaused });
+
+  return (
+    <div
+      ref={containerRef}
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-x-hidden flex items-center py-6"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="flex gap-4 md:gap-8 px-4">
+        {duplicated.map((brand, i) => (
+          <a
+            key={i}
+            href={brand.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 w-36 h-20 md:w-52 md:h-28 bg-neutral-900/60 border border-neutral-800 rounded-2xl flex items-center justify-center p-4 hover:border-teal-400/50 hover:bg-neutral-800/90 transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(20,184,166,0.15)] relative overflow-hidden"
+          >
+            {brand.img ? (
+              <img
+                src={brand.img}
+                alt={brand.name}
+                className="max-w-full max-h-full object-contain grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105"
+                draggable={false}
+              />
+            ) : (
+              <span className="text-sm md:text-lg font-bold text-neutral-500 group-hover:text-teal-400 transition-colors uppercase tracking-widest text-center">
+                {brand.name}
+              </span>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // --- MULTI STRIP BANNERS (2 ROWS IN ONE SECTION) ---
 const MultiStripBanners = () => {
   const [zoomSrc, setZoomSrc] = useState(null);
@@ -602,7 +662,8 @@ export default function Portfolio() {
   const sectionRefs = { 
     home: useRef(null), 
     skills: useRef(null), 
-    results: useRef(null)
+    results: useRef(null),
+    brands: useRef(null)
   };
 
   useEffect(() => {
@@ -684,6 +745,11 @@ export default function Portfolio() {
         {/* Results Section */}
         <SectionWrapper ref={sectionRefs.results} id="results" title="Results">
           <MultiStripBanners />
+        </SectionWrapper>
+
+        {/* Brands Section (Clients & Partners) */}
+        <SectionWrapper ref={sectionRefs.brands} id="brands" title="Brands We've Scaled" className="pt-0 md:pt-10">
+          <BrandsBannerStrip items={brandLogos} />
         </SectionWrapper>
 
         {/* Yellow Cards Container */}
